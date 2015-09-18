@@ -37,6 +37,9 @@ GLfloat x=0;
 GLfloat y=0;
 GLfloat z=0;
 
+// keyframe identification
+GLint key=0;
+GLint maxKey=1;
 
 
 //================================
@@ -59,6 +62,17 @@ void update( void ) {
     
     // rotation angle
     g_angle = ( g_angle + 5 ) % 360;
+    cout << key << endl;
+    
+    // switch keyframes
+    if(g_angle % 360==0){
+        key++;
+        if(key>maxKey){
+            key=0;
+        }
+        
+    }
+    
 }
 
 void put(GLfloat xp, GLfloat yp, GLfloat zp){
@@ -113,8 +127,47 @@ void render( void ) {
     
     // modelview matrix
     glMatrixMode( GL_MODELVIEW );
+    
+    // Step 1: Get the inputs
+    
+    // Step 2: Calculate result points
+    
+    // the position to render
+    
+    // keyframe testing
+    // Frame 1:
+    GLfloat x1=2.0f;
+    GLfloat y1=0.0f;
+    GLfloat z1=-5.0f;
+   
+    
+    // Frame 2:
+    GLfloat x2=0.0f;
+    GLfloat y2=0.0f;
+    GLfloat z2=-5.0f;
+    
+    
+    
+    GLfloat currentX;
+    GLfloat currentY;
+    GLfloat currentZ;
+    if(key==0){
+        currentX=2.0f;
+        currentY=0.0f;
+        currentZ=-5.0f;
+        
+    }
+    else if(key==1){
+        currentX=0.0f;
+        currentY=0.0f;
+        currentZ=-5.0f;
+        
+    }
+    // start the render
     glLoadIdentity();
-    glTranslatef (0.0, 0.0, -5.0);
+    
+    // put the object into the current position
+    glTranslatef (currentX, currentY, currentZ);
     
     /*glTranslatef(0.0, 0.0, 0.0);
     glTranslatef(0.0, 0.0, 222.0);
@@ -123,10 +176,14 @@ void render( void ) {
     
     
     //glTranslatef (0.0, 0.0, 5.0);
+    
+    // apply rotations
     Quaternion q=Quaternion::fixedAngle(g_angle/59.0f, g_angle/59.0f, g_angle/59.0f);
     //Quaternion s(g_angle/59.0f,1,1,1,true);
     GLfloat* r=q.rMatrix();
     //cout << "2---2"<<r[15] << endl;
+    
+    
     glMultMatrixf(r);//
     //glPushMatrix();
     
