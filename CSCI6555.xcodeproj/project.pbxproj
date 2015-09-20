@@ -37,6 +37,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B77322E11BAF637A00309BB7 /* Matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Matrix.h; sourceTree = "<group>"; };
 		B7E1A51C1B99172D00AC0E89 /* CSCI6555 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CSCI6555; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7E1A51F1B99172D00AC0E89 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B7E1A5281B9917DC00AC0E89 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -99,6 +100,7 @@
 				B7E1A51F1B99172D00AC0E89 /* main.cpp */,
 				B7E1A53C1B991E4000AC0E89 /* TestClass.h */,
 				B7E1A53D1BA378E700AC0E89 /* Quaternion.h */,
+				B77322E11BAF637A00309BB7 /* Matrix.h */,
 			);
 			path = CSCI6555;
 			sourceTree = "<group>";

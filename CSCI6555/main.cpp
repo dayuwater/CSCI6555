@@ -9,6 +9,7 @@
 #include <iostream>
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
+#include "Matrix.h"
 #include "TestClass.h"
 #include "Quaternion.h"
 // standard
@@ -39,7 +40,8 @@ GLfloat z=0;
 
 // keyframe identification
 GLint key=0;
-GLint maxKey=1;
+GLint maxKey=7;
+bool keyInc=true; // see if the key is increasing
 
 
 //================================
@@ -66,11 +68,30 @@ void update( void ) {
     
     // switch keyframes
     if(g_angle % 360==0){
-        key++;
-        if(key>maxKey){
-            key=0;
-        }
         
+        /*  Reverse animation, not implement in this assignment
+        if(keyInc){
+            key++;
+            if(key>=maxKey){
+                keyInc=false;
+                key-=2;
+            }
+        }
+        else{
+            key--;
+            if(key<0){
+                keyInc=true;
+                key+=2;
+            }
+        }*/
+        
+        if(keyInc){
+            key++;
+            if(key>=maxKey){
+                key=0;
+            }
+        }
+
     }
     
 }
@@ -135,65 +156,123 @@ void render( void ) {
     // the position to render
     
     // keyframe testing
-    // Frame 1:
-    GLfloat x1=2.0f;
-    GLfloat y1=0.0f;
-    GLfloat z1=-5.0f;
-   
     
-    // Frame 2:
-    GLfloat x2=0.0f;
-    GLfloat y2=0.0f;
-    GLfloat z2=-5.0f;
+    // Frames of different objects
+    GLfloat frameX[4][7];
+    GLfloat frameY[4][7];
+    GLfloat frameZ[4][7];
+    GLfloat frameXR[4][7]; // fixed angle
+    GLfloat frameYR[4][7]; // fixed angle
+    GLfloat frameZR[4][7]; // fixed angle
+    GLfloat frameQW[4][7]; // quaternion w
+    GLfloat frameQA[4][7]; // quaternion a
+    GLfloat frameQB[4][7]; // quaternion b
+    GLfloat frameQC[4][7]; // quaternion c
+    
+    for(int i=0; i<4; i++){
+        for(int j=0; j<7; j++){
+            frameX[i][j]=-2.0f+0.5f*j;
+            frameY[i][j]=-1.4f+i*1.0f-sqrt(pow((j-4)*0.125f,2));
+            frameZ[i][j]=-5.0f;
+            frameQW[i][j]=g_angle/(180.0f/PI);
+            if(j%3==0){
+                frameXR[i][j]=g_angle/(180.0f/PI);
+                frameYR[i][j]=0;
+                frameZR[i][j]=0;
+                frameQA[i][j]=1;
+                frameQB[i][j]=0;
+                frameQC[i][j]=0;
+            }
+            if(j%3==1){
+                frameXR[i][j]=0;
+                frameYR[i][j]=g_angle/(180.0f/PI);
+                frameZR[i][j]=0;
+                frameQA[i][j]=0;
+                frameQB[i][j]=1;
+                frameQC[i][j]=0;
+            }
+
+            if(j%3==2){
+                frameXR[i][j]=0;
+                frameYR[i][j]=0;
+                frameZR[i][j]=g_angle/(180.0f/PI);
+                frameQA[i][j]=0;
+                frameQB[i][j]=0;
+                frameQC[i][j]=1;
+            }
+            
+
+        }
+    }
     
     
     
-    GLfloat currentX;
-    GLfloat currentY;
-    GLfloat currentZ;
-    if(key==0){
-        currentX=2.0f;
-        currentY=0.0f;
-        currentZ=-5.0f;
+    GLfloat currentX[4];
+    GLfloat currentY[4];
+    GLfloat currentZ[4];
+    GLfloat currentXR[4];
+    GLfloat currentYR[4];
+    GLfloat currentZR[4];
+    GLfloat currentQW[4];
+    GLfloat currentQA[4];
+    GLfloat currentQB[4];
+    GLfloat currentQC[4];
+    
+    // fixed for now, will implement this using splines
+    // i=0, the bottom one, use Catmul-Rom spline with Euler Angles
+    // i=1, one above i=0,use B-spline with Euler Angles
+    // i=2, one below i=3, use Catmul-Rom spline with Quaternion
+    // i=3, the top one, use B-spline with Quaternion
+    // The rotation is about x first, then y, then z, and again, in all objects
+    // No combination for now
+    for(int i=0; i<4; i++){
+        currentX[i]=frameX[i][key];
+        currentY[i]=frameY[i][key];
+        
+        currentZ[i]=frameZ[i][key];
+        currentXR[i]=frameXR[i][key];
+        currentYR[i]=frameYR[i][key];
+        currentZR[i]=frameZR[i][key];
+        currentQA[i]=frameQA[i][key];
+        currentQB[i]=frameQB[i][key];
+        currentQC[i]=frameQC[i][key];
+        currentQW[i]=frameQW[i][key];
         
     }
-    else if(key==1){
-        currentX=0.0f;
-        currentY=0.0f;
-        currentZ=-5.0f;
+    
+    for(int i=0; i<4; i++){
+        
+        // start the render
+        glLoadIdentity();
+        
+        // put the object into the current position
+        glTranslatef (currentX[i], currentY[i], currentZ[i]);
+        
+        GLfloat* r;
+        // apply rotations
+        if(i<2){
+            Quaternion q=Quaternion::fixedAngle(currentXR[i], currentYR[i], currentZR[i]);
+            r=q.rMatrix();
+        }
+        else{
+            Quaternion s(currentQW[i],currentQA[i],currentQB[i],currentQC[i],true);
+            r=s.rMatrix();
+        }
+        
+        
+        
+        glMultMatrixf(r);//
+        //glRotated(g_angle, 1.0, 1.0, 1.0);
+        
+        
+        
+        
+        // render objects
+        
+        glutSolidTeapot(0.125f+0.0625f*(i+1));
+        
         
     }
-    // start the render
-    glLoadIdentity();
-    
-    // put the object into the current position
-    glTranslatef (currentX, currentY, currentZ);
-    
-    /*glTranslatef(0.0, 0.0, 0.0);
-    glTranslatef(0.0, 0.0, 222.0);
-    glTranslatef(0.0, 0.0, -222.0);
-    glTranslatef(0.0, 0.0, 222.0);*/
-    
-    
-    //glTranslatef (0.0, 0.0, 5.0);
-    
-    // apply rotations
-    Quaternion q=Quaternion::fixedAngle(g_angle/59.0f, g_angle/59.0f, g_angle/59.0f);
-    //Quaternion s(g_angle/59.0f,1,1,1,true);
-    GLfloat* r=q.rMatrix();
-    //cout << "2---2"<<r[15] << endl;
-    
-    
-    glMultMatrixf(r);//
-    //glPushMatrix();
-    
-    //glRotated(g_angle, 1.0, 1.0, 1.0);
-    ////glTranslatef (0.0, 0.0, -5.0);
-    
-    
-    
-    // render objects
-    glutSolidTeapot(1.0);
     
     
     // disable lighting
