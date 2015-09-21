@@ -12,6 +12,7 @@
 #include "TestClass.h"
 #include "Quaternion.h"
 #include "math.h"
+#include "Splines.h"
 #define PI 3.14159265358979
 
 
@@ -28,6 +29,9 @@ Quaternion qu3(PI/3,0,0,1,false);
 Quaternion qu4(PI,1,0,0,true);
 Quaternion qu5(PI,0,1,0,true);
 Quaternion qu6(PI,0,0,1,true);
+
+
+// Part 1: Core Test
 
 TEST(Creation,Empty){
     EXPECT_EQ(0, q._w);
@@ -149,6 +153,25 @@ TEST(Transformation,Matrix){
     }
     //assert(false);
     
+}
+
+
+// Part 2: Animation Test
+TEST(Spline, Create){
+    Animations::Spline s;
+    //assert(false);
+    
+}
+
+TEST(CRS,Create){
+    Animations::CatmulRomSpline s;
+    //assert(false);
+
+}
+
+TEST(BS,Create){
+    Animations::BSpline s;
+    //assert(false);
 }
 
 

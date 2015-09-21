@@ -12,6 +12,7 @@
 #include "Matrix.h"
 #include "TestClass.h"
 #include "Quaternion.h"
+#include "Splines.h"
 // standard
 #include <assert.h>
 #include <math.h>
@@ -31,7 +32,7 @@ int g_screenHeight = 0;
 int g_frameIndex = 0;
 
 // angle for rotation
-int g_angle = 0;
+int g_angle = 30;
 
 // position
 GLfloat x=0;
@@ -202,6 +203,35 @@ void render( void ) {
             }
             
 
+        }
+    }
+    
+    // store the positions into spline instances
+    Animations::CatmulRomSpline crs[4];
+    Animations::BSpline bs[4];
+    
+    for(int i=0; i<4; i++){
+        for(int j=0; j<7; j++){
+            // Fixed angle objects
+            if(i<2){
+                crs[i].addPosWithAngle(frameX[i][j], frameY[i][j], frameZ[i][j], frameXR[i][j]
+                                       , frameYR[i][j], frameZR[i][j]);
+                bs[i].addPosWithAngle(frameX[i][j], frameY[i][j], frameZ[i][j], frameXR[i][j]
+                                       , frameYR[i][j], frameZR[i][j]);
+
+                
+            }
+            // Quaternion objects
+            else{
+                crs[i].addPosWithQuaternion(frameX[i][j], frameY[i][j], frameZ[i][j], frameQW[i][j]
+                                       , frameQA[i][j], frameQB[i][j],frameQC[i][j]);
+                bs[i].addPosWithQuaternion(frameX[i][j], frameY[i][j], frameZ[i][j], frameQW[i][j]
+                                            , frameQA[i][j], frameQB[i][j],frameQC[i][j]);
+
+
+                
+                
+            }
         }
     }
     
