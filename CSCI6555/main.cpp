@@ -71,28 +71,28 @@ void update( void ) {
     if(g_angle % 360==0){
         
         /*  Reverse animation, not implement in this assignment
-        if(keyInc){
-            key++;
-            if(key>=maxKey){
-                keyInc=false;
-                key-=2;
-            }
-        }
-        else{
-            key--;
-            if(key<0){
-                keyInc=true;
-                key+=2;
-            }
-        }*/
+         if(keyInc){
+         key++;
+         if(key>=maxKey){
+         keyInc=false;
+         key-=2;
+         }
+         }
+         else{
+         key--;
+         if(key<0){
+         keyInc=true;
+         key+=2;
+         }
+         }*/
         
         if(keyInc){
             key++;
-            if(key>=maxKey){
+            if(key>=maxKey-3){
                 key=0;
             }
         }
-
+        
     }
     
 }
@@ -192,7 +192,7 @@ void render( void ) {
                 frameQB[i][j]=1;
                 frameQC[i][j]=0;
             }
-
+            
             if(j%3==2){
                 frameXR[i][j]=0;
                 frameYR[i][j]=0;
@@ -202,7 +202,7 @@ void render( void ) {
                 frameQC[i][j]=1;
             }
             
-
+            
         }
     }
     
@@ -217,24 +217,35 @@ void render( void ) {
                 crs[i].addPosWithAngle(frameX[i][j], frameY[i][j], frameZ[i][j], frameXR[i][j]
                                        , frameYR[i][j], frameZR[i][j]);
                 bs[i].addPosWithAngle(frameX[i][j], frameY[i][j], frameZ[i][j], frameXR[i][j]
-                                       , frameYR[i][j], frameZR[i][j]);
-
+                                      , frameYR[i][j], frameZR[i][j]);
+                
                 
             }
             // Quaternion objects
             else{
                 crs[i].addPosWithQuaternion(frameX[i][j], frameY[i][j], frameZ[i][j], frameQW[i][j]
-                                       , frameQA[i][j], frameQB[i][j],frameQC[i][j]);
-                bs[i].addPosWithQuaternion(frameX[i][j], frameY[i][j], frameZ[i][j], frameQW[i][j]
                                             , frameQA[i][j], frameQB[i][j],frameQC[i][j]);
-
-
+                bs[i].addPosWithQuaternion(frameX[i][j], frameY[i][j], frameZ[i][j], frameQW[i][j]
+                                           , frameQA[i][j], frameQB[i][j],frameQC[i][j]);
+                
+                
                 
                 
             }
         }
     }
     
+    glLoadIdentity();
+    glColor3f(1,0,0);
+    
+    for(int i=0; i<4; i++){
+        glBegin(GL_LINES);
+        for(int j=0; j<maxKey; j++){
+            glVertex3f(frameX[i][j],frameY[i][j],frameZ[i][j]);
+        }
+        glEnd();
+        
+    }
     
     
     GLfloat currentX[4];
@@ -256,17 +267,36 @@ void render( void ) {
     // The rotation is about x first, then y, then z, and again, in all objects
     // No combination for now
     for(int i=0; i<4; i++){
-        currentX[i]=frameX[i][key];
-        currentY[i]=frameY[i][key];
-        
-        currentZ[i]=frameZ[i][key];
-        currentXR[i]=frameXR[i][key];
-        currentYR[i]=frameYR[i][key];
-        currentZR[i]=frameZR[i][key];
-        currentQA[i]=frameQA[i][key];
-        currentQB[i]=frameQB[i][key];
-        currentQC[i]=frameQC[i][key];
-        currentQW[i]=frameQW[i][key];
+        if(i<2){
+            vector<float> currentPos;
+            if(i==0){
+                currentPos=crs[i].interpolateUsingFixedAngle(key+g_angle/360.0f);
+            }
+            else{
+                currentPos=bs[i].interpolateUsingFixedAngle(key+g_angle/360.0f);
+            }
+            
+            currentX[i]=currentPos[0];
+            currentY[i]=currentPos[1];
+            
+            currentZ[i]=currentPos[2];
+            currentXR[i]=currentPos[3];
+            currentYR[i]=currentPos[4];
+            currentZR[i]=currentPos[5];
+        }
+        else{
+            currentX[i]=frameX[i][key];
+            currentY[i]=frameY[i][key];
+            
+            currentZ[i]=frameZ[i][key];
+            
+            currentQA[i]=frameQA[i][key];
+            currentQB[i]=frameQB[i][key];
+            currentQC[i]=frameQC[i][key];
+            currentQW[i]=frameQW[i][key];
+            
+            
+        }
         
     }
     
@@ -277,6 +307,8 @@ void render( void ) {
         
         // put the object into the current position
         glTranslatef (currentX[i], currentY[i], currentZ[i]);
+        
+        
         
         GLfloat* r;
         // apply rotations

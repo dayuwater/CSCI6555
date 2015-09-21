@@ -51,6 +51,64 @@ namespace Animations {
             _qc.push_back(qc);
             
         }
+        
+        // interpolate using fixed angle
+        vector<float> interpolateUsingFixedAngle(float time){
+            vector<float> result;
+            
+            result.resize(6);
+            // integer part of the time
+            int intPart=(int)time;
+            // decimal part of the time
+            float decPart=time-intPart;
+            
+           
+            
+            
+            
+            float trans[]={(float)pow(decPart,3),(float)pow(decPart,2),decPart,1};
+            Matrix T=Matrix(trans,1,4);
+            
+            float Xpoints[]={_x[intPart],_x[intPart+1],_x[intPart+2],_x[intPart+3]};
+            Matrix xG=Matrix(Xpoints,4,1);
+            
+            float Ypoints[]={_y[intPart],_y[intPart+1],_y[intPart+2],_y[intPart+3]};
+            Matrix yG=Matrix(Ypoints,4,1);
+            
+            float Zpoints[]={_z[intPart],_z[intPart+1],_z[intPart+2],_z[intPart+3]};
+            Matrix zG=Matrix(Zpoints,4,1);
+            
+            float XRpoints[]={_rx[intPart],_rx[intPart+1],_rx[intPart+2],_rx[intPart+3]};
+            Matrix xrG=Matrix(XRpoints,4,1);
+            
+            float YRpoints[]={_ry[intPart],_ry[intPart+1],_ry[intPart+2],_ry[intPart+3]};
+            Matrix yrG=Matrix(YRpoints,4,1);
+            
+            float ZRpoints[]={_rz[intPart],_rz[intPart+1],_rz[intPart+2],_rz[intPart+3]};
+            Matrix zrG=Matrix(ZRpoints,4,1);
+            
+            result[0]=T.multiply(_m).multiply(xG).get(0, 0);
+            result[1]=T.multiply(_m).multiply(yG).get(0, 0);
+            result[2]=T.multiply(_m).multiply(zG).get(0, 0);
+            result[3]=T.multiply(_m).multiply(xrG).get(0, 0);
+            result[4]=T.multiply(_m).multiply(yrG).get(0, 0);
+            result[5]=T.multiply(_m).multiply(zrG).get(0, 0);
+            
+            
+            
+            //result: x->y->z->rx->ry->rz
+            return result;
+        }
+        
+        
+        // interpolate using quaternion
+        vector<float> interpolateUsingQuaternion(float time){
+            vector<float> result;
+            result.resize(7);
+            
+            //result: x->y->z->qw->qa->qb->qc
+            return result;
+        }
     protected:
         
         // the position of key frames
@@ -70,7 +128,7 @@ namespace Animations {
         vector<float> _qc;
         
         
-    private:
+    
         Matrix _m;
         
         
@@ -82,19 +140,16 @@ namespace Animations {
     public:
         CatmulRomSpline(){
             float matNums[]={-0.5f,1.5f,-1.5f,0.5f,1.0f,-2.5f,2.0f,-0.5f,-0.5f,0.0f,0.5f,0.0f,0.0f,1.0f,0.0f,0.0f};
-            _CRMatrix=Matrix(matNums,4,4);
+            _m=Matrix(matNums,4,4);
+            
         }
         
-        Matrix getMatrix(){
-            return _CRMatrix;
-        }
+        
         
         void setMatrix(){
             std::cout << "You cannot set the matrix" << endl;
         }
 
-    private:
-        Matrix _CRMatrix;
         
         
     };
@@ -103,13 +158,12 @@ namespace Animations {
     {
     public:
         BSpline(){
-            float matNums[]={-1,3,-3,1,3,-6,3,0,-3,0,3,0,1,4,1,0};
-            _BMatrix=Matrix(matNums,4,4);
+            float matNums[]={-1.0f,3.0f,-3.0f,1.0f,3.0f,-6.0f,3.0f,0.0f,-3.0f,0.0f,3.0f,0.0f,1.0f,4.0f,1.0f,0.0f};
+            _m=Matrix(matNums,4,4);
+            _m=_m.scale(6.0f, 0x94);
 
         }
-        Matrix getMatrix(){
-            return _BMatrix;
-        }
+       
         
         void setMatrix(){
             std::cout << "You cannot set the matrix" << endl;
