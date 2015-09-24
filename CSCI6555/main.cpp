@@ -180,7 +180,7 @@ void render( void ) {
                 frameXR[i][j]=g_angle/(180.0f/PI);
                 frameYR[i][j]=0;
                 frameZR[i][j]=0;
-                frameQA[i][j]=1;
+                frameQA[i][j]=1.0f;
                 frameQB[i][j]=0;
                 frameQC[i][j]=0;
             }
@@ -189,7 +189,7 @@ void render( void ) {
                 frameYR[i][j]=g_angle/(180.0f/PI);
                 frameZR[i][j]=0;
                 frameQA[i][j]=0;
-                frameQB[i][j]=1;
+                frameQB[i][j]=1.0f;
                 frameQC[i][j]=0;
             }
             
@@ -199,7 +199,7 @@ void render( void ) {
                 frameZR[i][j]=g_angle/(180.0f/PI);
                 frameQA[i][j]=0;
                 frameQB[i][j]=0;
-                frameQC[i][j]=1;
+                frameQC[i][j]=1.0f;
             }
             
             
@@ -285,15 +285,23 @@ void render( void ) {
             currentZR[i]=currentPos[5];
         }
         else{
-            currentX[i]=frameX[i][key];
-            currentY[i]=frameY[i][key];
+            vector<float> currentPos;
+            if(i==2){
+                currentPos=crs[i].interpolateUsingQuaternion(key+g_angle/360.0f);
+            }
+            else{
+                currentPos=bs[i].interpolateUsingQuaternion(key+g_angle/360.0f);
+            }
+            currentX[i]=currentPos[0];
+            currentY[i]=currentPos[1];
             
-            currentZ[i]=frameZ[i][key];
+            currentZ[i]=currentPos[2];
             
-            currentQA[i]=frameQA[i][key];
-            currentQB[i]=frameQB[i][key];
-            currentQC[i]=frameQC[i][key];
-            currentQW[i]=frameQW[i][key];
+            currentQA[i]=currentPos[3];
+            currentQB[i]=currentPos[4];
+            currentQC[i]=currentPos[5];
+            currentQW[i]=currentPos[6];
+            
             
             
         }
@@ -318,7 +326,8 @@ void render( void ) {
         }
         else{
             Quaternion s(currentQW[i],currentQA[i],currentQB[i],currentQC[i],true);
-            r=s.rMatrix();
+            Quaternion t(g_angle/59.0f,1,1,0,true);
+            r=t.rMatrix();
         }
         
         

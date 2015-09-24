@@ -31,9 +31,10 @@ public:
     Quaternion(float w,float a,float b,float c,bool rotation){
         if(rotation){
             _w=cosf(w/2);
-            _a=a*sinf(w/2);
-            _b=b*sinf(w/2);
-            _c=c*sinf(w/2);
+            float vecLength=sqrtf(a*a+b*b+c*c);
+            _a=a/vecLength*sinf(w/2);
+            _b=b/vecLength*sinf(w/2);
+            _c=c/vecLength*sinf(w/2);
         }
         else{
             _w=w;

@@ -75,13 +75,14 @@ TEST(Creation,Unit){
 }
 
 TEST(Operations,Square){
-    /*EXPECT_FLOAT_EQ(0, q.square());
-    
-    EXPECT_FLOAT_EQ(0.24999999836, qu1.square());
-    
-    
-    EXPECT_FLOAT_EQ(0.24999999999, qu2.square());*/
-    
+    EXPECT_FLOAT_EQ(qu4.square(), 1.00000);
+    EXPECT_FLOAT_EQ(qu5.square(), 1.00000);
+
+    EXPECT_FLOAT_EQ(qu1.square(), 1.00000);
+    Quaternion j= Quaternion(2,1,3,5,true);
+    EXPECT_FLOAT_EQ(j.square(), 1.000000);
+    Quaternion k= Quaternion(2.9,7,23,87,true);
+    EXPECT_FLOAT_EQ(k.square(), 1.000000);
 
 
 }

@@ -106,6 +106,51 @@ namespace Animations {
             vector<float> result;
             result.resize(7);
             
+            // integer part of the time
+            int intPart=(int)time;
+            // decimal part of the time
+            float decPart=time-intPart;
+            
+            
+            
+            
+            
+            float trans[]={(float)pow(decPart,3),(float)pow(decPart,2),decPart,1};
+            Matrix T=Matrix(trans,1,4);
+            
+            float Xpoints[]={_x[intPart],_x[intPart+1],_x[intPart+2],_x[intPart+3]};
+            Matrix xG=Matrix(Xpoints,4,1);
+            
+            float Ypoints[]={_y[intPart],_y[intPart+1],_y[intPart+2],_y[intPart+3]};
+            Matrix yG=Matrix(Ypoints,4,1);
+            
+            float Zpoints[]={_z[intPart],_z[intPart+1],_z[intPart+2],_z[intPart+3]};
+            Matrix zG=Matrix(Zpoints,4,1);
+            
+            float QWpoints[]={_qw[intPart],_qw[intPart+1],_qw[intPart+2],_qw[intPart+3]};
+            Matrix qwG=Matrix(QWpoints,4,1);
+            
+            
+            float QApoints[]={_qa[intPart],_qa[intPart+1],_qa[intPart+2],_qa[intPart+3]};
+            Matrix qaG=Matrix(QApoints,4,1);
+            
+            float QBpoints[]={_qb[intPart],_qb[intPart+1],_qb[intPart+2],_qb[intPart+3]};
+            Matrix qbG=Matrix(QBpoints,4,1);
+            
+            float QCpoints[]={_qc[intPart],_qc[intPart+1],_qc[intPart+2],_qc[intPart+3]};
+            Matrix qcG=Matrix(QCpoints,4,1);
+
+            
+            result[0]=T.multiply(_m).multiply(xG).get(0, 0);
+            result[1]=T.multiply(_m).multiply(yG).get(0, 0);
+            result[2]=T.multiply(_m).multiply(zG).get(0, 0);
+            result[3]=T.multiply(_m).multiply(qwG).get(0, 0);
+            result[4]=T.multiply(_m).multiply(qaG).get(0, 0);
+            result[5]=T.multiply(_m).multiply(qbG).get(0, 0);
+            result[6]=T.multiply(_m).multiply(qcG).get(0,0);
+            
+
+            
             //result: x->y->z->qw->qa->qb->qc
             return result;
         }
