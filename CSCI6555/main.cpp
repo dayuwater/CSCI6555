@@ -172,8 +172,8 @@ void render( void ) {
     
     for(int i=0; i<4; i++){
         for(int j=0; j<7; j++){
-            frameX[i][j]=-2.0f+0.5f*j;
-            frameY[i][j]=-1.4f+i*1.0f-sqrt(pow((j-4)*0.125f,2));
+            frameX[i][j]=0.0f+(0.5f+i*0.5f)*cosf(PI/3*j);
+            frameY[i][j]=-0.0f+(0.5f+i*0.5f)*sinf(PI/3*j);
             frameZ[i][j]=-5.0f;
             frameQW[i][j]=g_angle/(180.0f/PI);
             if(j%3==0){
@@ -259,13 +259,13 @@ void render( void ) {
     GLfloat currentQB[4];
     GLfloat currentQC[4];
     
-    // fixed for now, will implement this using splines
+    //
     // i=0, the bottom one, use Catmul-Rom spline with Euler Angles
     // i=1, one above i=0,use B-spline with Euler Angles
     // i=2, one below i=3, use Catmul-Rom spline with Quaternion
     // i=3, the top one, use B-spline with Quaternion
     // The rotation is about x first, then y, then z, and again, in all objects
-    // No combination for now
+    //
     for(int i=0; i<4; i++){
         if(i<2){
             vector<float> currentPos;
@@ -297,10 +297,10 @@ void render( void ) {
             
             currentZ[i]=currentPos[2];
             
-            currentQA[i]=currentPos[3];
-            currentQB[i]=currentPos[4];
-            currentQC[i]=currentPos[5];
-            currentQW[i]=currentPos[6];
+            currentQW[i]=currentPos[3];
+            currentQA[i]=currentPos[4];
+            currentQB[i]=currentPos[5];
+            currentQC[i]=currentPos[6];
             
             
             
@@ -327,7 +327,7 @@ void render( void ) {
         else{
             Quaternion s(currentQW[i],currentQA[i],currentQB[i],currentQC[i],true);
             Quaternion t(g_angle/59.0f,1,1,0,true);
-            r=t.rMatrix();
+            r=s.rMatrix();
         }
         
         
@@ -340,7 +340,7 @@ void render( void ) {
         
         // render objects
         
-        glutSolidTeapot(0.125f+0.0625f*(i+1));
+        glutSolidTeapot(0.125f+0.0000f*(i+1));
         
         
     }
