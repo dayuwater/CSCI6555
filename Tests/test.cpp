@@ -13,6 +13,7 @@
 #include "Quaternion.h"
 #include "math.h"
 #include "Splines.h"
+#include "Models.h"
 #define PI 3.14159265358979
 
 
@@ -173,6 +174,34 @@ TEST(CRS,Create){
 TEST(BS,Create){
     Animations::BSpline s;
     //assert(false);
+}
+
+// Part 3: Model Test
+TEST(Model,Create){
+    Model m;
+    EXPECT_FLOAT_EQ(m._x, 0);
+    EXPECT_FLOAT_EQ(m._y, 0);
+    EXPECT_FLOAT_EQ(m._z, 0);
+    Model p(1,2,3);
+    EXPECT_FLOAT_EQ(p._x, 1);
+    EXPECT_FLOAT_EQ(p._y, 2);
+    EXPECT_FLOAT_EQ(p._z, 3);
+    
+}
+TEST(Model, AddChild){
+    Model m;
+    Model p(1,2,34);
+    Model q(2,3,45);
+    Model r(3,4,56);
+    Model s(4,5,67);
+    m.addChild(p);
+    m.addChild(q);
+    p.addChild(r);
+    q.addChild(s);
+   
+    
+    
+    
 }
 
 

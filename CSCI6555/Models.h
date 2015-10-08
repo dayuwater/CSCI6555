@@ -16,14 +16,13 @@
 // Hierachical Model class
 class Model{
 public:
-    Model(){
-        children.resize(0);
-    }
+    
     // create a model and put it into a specific location
-    Model(float x,float y,float z){
+    Model(float x=0,float y=0,float z=0){
         _x=x;
         _y=y;
         _z=z;
+        children.resize(0);
     }
    
     // use OpenGL function here
@@ -31,21 +30,28 @@ public:
         
         
     }
-    void addChild(Model m){
+    void addChild(Model &m){
         children.push_back(m);
-        m.parent()=*this;
+        m.parent.push_back(*this);
     }
     // rotate about the parent
     void rotate(float angle){
         
     }
-protected:
-    Model parent();
-    vector<Model> children;
+    
+    Model getParent(){
+        return parent[0];
+    }
+    
+    
     // position of the model
     float _x;
     float _y;
     float _z;
+protected:
+    vector<Model> parent;
+    vector<Model> children;
+   
     // orientation using fixed angle
     float _rx;
     float _ry;
