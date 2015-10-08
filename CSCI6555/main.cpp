@@ -16,6 +16,8 @@
 // standard
 #include <assert.h>
 #include <math.h>
+//#include "HW1.cpp"
+#include "Models.h"
 
 #define PI 3.14159265358979
 
@@ -370,6 +372,7 @@ void HW2(){
     cout << "Entered Mode 2" << endl;
     
 }
+
 void render( void ) {
     renderReady();
     if(mode==1){
@@ -377,6 +380,9 @@ void render( void ) {
     }
     else if(mode==2){
         HW2();
+    }
+    else if(mode==3){
+        //HW3();
     }
     glutSwapBuffers();
 }
@@ -394,6 +400,9 @@ void keyboard( unsigned char key, int x, int y ) {
             break;
         case '2':
             mode=2;
+            break;
+        case '3':
+            mode=3;
             break;
     }
 }
