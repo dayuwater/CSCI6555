@@ -44,6 +44,11 @@ GLint key=0;
 GLint maxKey=7;
 bool keyInc=true; // see if the key is increasing
 
+// Modes:
+// 1=HW1
+// 2=HW2
+
+
 
 //================================
 // init
