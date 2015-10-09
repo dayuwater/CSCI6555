@@ -28,7 +28,7 @@ public:
        // Create a quaternion directly.
     // rotation=true means transfering the parameters to a unit rotation quaternion
     // rotation=false means  keeping the parameters
-    Quaternion(float w,float a,float b,float c,bool rotation){
+    Quaternion(float w,float a,float b,float c,bool rotation=true){
         if(rotation){
             _w=cosf(w/2);
             float vecLength=sqrtf(a*a+b*b+c*c);

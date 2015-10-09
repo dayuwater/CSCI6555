@@ -125,11 +125,6 @@ void renderReady(){
     glClearDepth (1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-}
-
-void HW1(){
-    // clear buffer
-    
     // render state
     glEnable(GL_DEPTH_TEST);
     glShadeModel(GL_SMOOTH);
@@ -164,6 +159,13 @@ void HW1(){
     
     // modelview matrix
     glMatrixMode( GL_MODELVIEW );
+
+    
+}
+
+void HW1(){
+    // clear buffer
+    
     
     // Step 1: Get the inputs
     
@@ -358,6 +360,7 @@ void HW1(){
         glutSolidTeapot(0.125f+0.0000f*(i+1));
         
         
+        
     }
     
     
@@ -369,8 +372,14 @@ void HW1(){
     
 }
 void HW2(){
-    cout << "Entered Mode 2" << endl;
-    
+   
+    Cube c;
+    c._rx=g_angle/59.0f;
+    c._qw=g_angle/59.0f;
+    c._qa=1.0f;
+    c._qb=1.0f;
+    c.draw(1);
+    //glutSolidTeapot(0.5f);
 }
 
 void render( void ) {
