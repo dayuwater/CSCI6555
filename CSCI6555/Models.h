@@ -12,6 +12,10 @@
 #include "Quaternion.h"
 #include "Splines.h"
 #include "Matrix.h"
+#include <OpenGL/OpenGL.h>
+#include <GLUT/GLUT.h>
+
+
 
 // Hierachical Model class
 class Model{
@@ -67,6 +71,7 @@ public:
         vector<Model> result;
         
         if(children.size()==0){
+            //result.push_back(*this);
             
         }
         else{

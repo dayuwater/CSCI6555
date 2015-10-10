@@ -14,6 +14,9 @@
 #include "math.h"
 #include "Splines.h"
 #include "Models.h"
+#include <OpenGL/OpenGL.h>
+#include <GLUT/GLUT.h>
+
 #define PI 3.14159265358979
 
 
@@ -194,14 +197,46 @@ TEST(Model, AddChild){
     Model q(2,3,45);
     Model r(3,4,56);
     Model s(4,5,67);
-    m.addChild(p);
-    m.addChild(q);
+    Model t(1,1,1);
+   
+    
+    r.addChild(t);
     p.addChild(r);
     q.addChild(s);
+    m.addChild(p);
+    m.addChild(q);
     vector<Model> d=m.getDecendents();
-    assert(false);
+    //assert(false);
     
     
+}
+
+TEST(Model,FormerAddChild){
+    Model m;
+    Model m1;
+    Model m2;
+    Model m11;
+    Model m12;
+    Model m21;
+    Model m22;
+    Model m23;
+    
+    m1.addChild(m11);
+    m1.addChild(m12);
+    m2.addChild(m21);
+    m2.addChild(m22);
+    m2.addChild(m23);
+    m.addChild(m1);
+    m.addChild(m2);
+    
+    vector<Model> dm=m.getDecendents();
+    vector<Model> dm1=m1.getDecendents();
+    vector<Model> dm2=m2.getDecendents();
+    
+    EXPECT_EQ(dm.size(),7);
+    EXPECT_EQ(dm1.size(), 2);
+    EXPECT_EQ(dm2.size(), 3);
+            
 }
 
 
