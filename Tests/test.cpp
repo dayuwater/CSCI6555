@@ -198,8 +198,8 @@ TEST(Model, AddChild){
     m.addChild(q);
     p.addChild(r);
     q.addChild(s);
-   
-    
+    vector<Model> d=m.getDecendents();
+    assert(false);
     
     
 }

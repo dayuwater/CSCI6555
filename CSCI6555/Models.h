@@ -63,6 +63,29 @@ public:
         return parent[0];
     }
     
+    vector<Model> getDecendents(){
+        vector<Model> result;
+        
+        if(children.size()==0){
+            
+        }
+        else{
+            for(int i=0; i<children.size();i++){
+                vector<Model> d=children[i].getDecendents();
+                
+                for(int j=0; j<d.size();j++){
+                    result.push_back(d[j]);
+                }
+                result.push_back(children[i]);
+                
+            }
+        }
+        
+    
+        
+        return result;
+    }
+    
     
     // position of the model
     float _x;
