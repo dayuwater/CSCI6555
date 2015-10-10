@@ -215,10 +215,10 @@ TEST(Model,FormerAddChild){
     Model m;
     Model m1;
     Model m2;
-    Model m11;
-    Model m12;
+    Cube m11;
+    Cube m12;
     Model m21;
-    Model m22;
+    Cube m22;
     Model m23;
     
     m1.addChild(m11);

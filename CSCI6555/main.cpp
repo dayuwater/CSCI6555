@@ -5,8 +5,12 @@
 //  Created by Tan Wang on 9/3/15.
 //  Copyright (c) 2015 Tan Wang. All rights reserved.
 //
+// Acknowledgement:
+// All the files in resources folder are the reused files I used in CSCI 4554
+// I use them in this project for geometric data of models
 
 #include <iostream>
+#include <fstream>
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
 #include "Matrix.h"
@@ -20,6 +24,7 @@
 #include "Models.h"
 
 #define PI 3.14159265358979
+#define RESOURCE_DIR   "/Users/tanwang/Documents/CSCI6555/CSCI6555/resources/"
 
 using namespace std;
 
@@ -171,6 +176,14 @@ void HW2(){
     c._qa=1.0f;
     c._qb=1.0f;
     c.draw(1);
+    
+    PolyModel car;
+    string model_file = RESOURCE_DIR + string("cone.d2");
+    ifstream car_fs(model_file);
+    car._ry=g_angle/59.0f;
+    car.loadModel(car_fs);
+    car.draw();
+    
     //glutSolidTeapot(0.5f);
 }
 

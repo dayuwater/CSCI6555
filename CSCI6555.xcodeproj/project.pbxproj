@@ -41,6 +41,9 @@
 		B77322E21BB0AE1400309BB7 /* Splines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Splines.h; sourceTree = "<group>"; };
 		B77322E51BC70EBC00309BB7 /* HW1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HW1.cpp; sourceTree = "<group>"; };
 		B77322E71BC7119C00309BB7 /* Models.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Models.h; sourceTree = "<group>"; };
+		B77322E81BC9C6C800309BB7 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		B77322E91BC9C7F300309BB7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		B77322EA1BC9CB3E00309BB7 /* resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = resources; path = CSCI6555/resources; sourceTree = "<group>"; };
 		B7E1A51C1B99172D00AC0E89 /* CSCI6555 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CSCI6555; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7E1A51F1B99172D00AC0E89 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		B7E1A5281B9917DC00AC0E89 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -78,6 +81,7 @@
 		B7E1A5131B99172D00AC0E89 = {
 			isa = PBXGroup;
 			children = (
+				B77322EA1BC9CB3E00309BB7 /* resources */,
 				B7E1A52E1B991BF800AC0E89 /* gtest.framework */,
 				B7E1A52C1B99187D00AC0E89 /* GLKit.framework */,
 				B7E1A52A1B9917E700AC0E89 /* OpenGL.framework */,
@@ -107,6 +111,8 @@
 				B77322E11BAF637A00309BB7 /* Matrix.h */,
 				B77322E71BC7119C00309BB7 /* Models.h */,
 				B77322E51BC70EBC00309BB7 /* HW1.cpp */,
+				B77322E81BC9C6C800309BB7 /* Vector.h */,
+				B77322E91BC9C7F300309BB7 /* Util.h */,
 			);
 			path = CSCI6555;
 			sourceTree = "<group>";
