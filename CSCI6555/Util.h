@@ -9,10 +9,15 @@
 #ifndef Util_h
 #define Util_h
 #include <math.h>
+#include "Vector.h"
 
 using namespace std;
 
 namespace Util {
+    
+    namespace Constants{
+        Vec POSITION(0.0f,-0.5f,-5.0f);
+    }
     
     vector<float> solveX2(float a, float b, float c){
         vector<float> result;

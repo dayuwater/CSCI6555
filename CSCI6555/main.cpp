@@ -22,11 +22,16 @@
 #include <math.h>
 #include "HW1.cpp"
 #include "Models.h"
+#include "Util.h"
 
 #define PI 3.14159265358979
 #define RESOURCE_DIR   "/Users/tanwang/Documents/CSCI6555/CSCI6555/resources/"
 
+
+
 using namespace std;
+using namespace Util;
+using namespace Util::Constants;
 
 //================================
 // global variables
@@ -168,21 +173,49 @@ void renderReady(){
     
 }
 
+
+
 void HW2(){
-   
-    Cube c;
+    
+   // The Ground
+    Cube c(3.0f,-0.0f,-2.0f,-2.0f);
     c._rx=g_angle/59.0f;
-    c._qw=g_angle/59.0f;
+    c._qw=0.0f;
     c._qa=1.0f;
     c._qb=1.0f;
     c.draw(1);
     
-    PolyModel car;
-    string model_file = RESOURCE_DIR + string("cone.d2");
+    PolyModel torso(POSITION.x(),POSITION.y(),POSITION.z());
+    string model_file = RESOURCE_DIR + string("torso.d2");
     ifstream car_fs(model_file);
-    car._ry=g_angle/59.0f;
-    car.loadModel(car_fs);
-    car.draw();
+    torso._ry=0.0f;
+    torso.loadModel(car_fs);
+    torso.scale(0.25f);
+    torso.translate(0.0f, 1.0f, 0.0f);
+    torso.draw();
+    
+    PolyModel leg1(POSITION.x(),POSITION.y(),POSITION.z());
+    string model2_file = RESOURCE_DIR + string("torso.d2");
+    ifstream car2_fs(model2_file);
+    leg1._ry=0.0f;
+    leg1.loadModel(car2_fs);
+    torso.addChild(leg1);
+    leg1.scale(0.125f,0.5f,0.125f);
+    leg1.translate(-0.25f, 0.3f, 0.25f);
+    leg1.draw();
+
+    
+    
+    PolyModel leg2(POSITION.x(),POSITION.y(),POSITION.z());
+    string model3_file = RESOURCE_DIR + string("torso.d2");
+    ifstream car3_fs(model3_file);
+    leg2._ry=0.0f;
+    leg2.loadModel(car3_fs);
+    torso.addChild(leg2);
+    leg2.scale(0.125f,0.5f,0.125f);
+    leg2.translate(0.25f, 0.3f, -0.25f);
+    leg2.draw();
+    
     
     //glutSolidTeapot(0.5f);
 }

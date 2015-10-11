@@ -25,6 +25,13 @@ public:
             vec[i]=0;
         }
     }
+    Vec(float x,float y,float z){
+        vec.resize(3);
+        vec[0]=x;
+        vec[1]=y;
+        vec[2]=z;
+
+    }
     
     // get the elements from the vector
     float x(){
@@ -51,6 +58,12 @@ public:
         vec[1]=b;
         vec[2]=c;
     }
+    void change(float a, float b, float c){
+        vec[0]+=a;
+        vec[1]+=b;
+        vec[2]+=c;
+    }
+
     // basic operations
     Vec add(Vec b){
         Vec r;
@@ -84,10 +97,25 @@ public:
         return r;
     }
     
+    
     Vec scale(float a){
         Vec r;
         r.set(x()*a, y()*a, z()*a);
         return r;
+    }
+    
+    // aliases of basic operations using operators
+    Vec operator+(Vec b){
+        return add(b);
+    }
+    Vec operator-(Vec b){
+        return sub(b);
+    }
+    Vec operator*(float b){
+        return scale(b);
+    }
+    Vec operator/(float b){
+        return scale(1.0f/b);
     }
     
     // advanced operations

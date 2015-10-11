@@ -37,7 +37,7 @@ public:
         _qc=qc;
         children.resize(0);
     }
-   
+    
     // use OpenGL function here
     void draw(){
         
@@ -88,7 +88,7 @@ public:
             }
         }
         
-    
+        
         
         return result;
     }
@@ -110,8 +110,8 @@ public:
 protected:
     vector<Model> parent;
     vector<Model> children;
-   
-   
+    
+    
     
 };
 
@@ -227,6 +227,7 @@ public:
         glLoadIdentity();
         glTranslatef(_x, _y, _z);
         selfRotate(mode);
+        
         glBegin(GL_TRIANGLES);
         for (int i=0; i<polys.size(); ++i)
         {
@@ -235,6 +236,9 @@ public:
                 for (int j=0; j<3; ++j)
                 {
                     int idx = polys[i][j];
+                    if(idx>=normals.size()){
+                        idx-=(normals.size());
+                    }
                     Vec v = verts[idx];
                     glNormal3f(normals[idx].x(),normals[idx].y(),normals[idx].z());
                     glVertex3f(v.x(),v.y(),v.z());
@@ -243,10 +247,64 @@ public:
         }
         glEnd();
     }
+    void scale(float f){
+        for(int i=0; i<verts.size();i++){
+            verts[i].change(-center.x(),-center.y(),-center.z());
+            verts[i]=verts[i].scale(f);
+            verts[i].change(center.x(),center.y(),center.z());
+        }
+        
+        maxVert.change(-center.x(),-center.y(),-center.z());
+        maxVert=maxVert.scale(f);
+        maxVert.change(center.x(),center.y(),center.z());
+        
+        
+        
+        minVert.change(-center.x(),-center.y(),-center.z());
+        minVert=minVert.scale(f);
+        minVert.change(center.x(),center.y(),center.z());
+        
+        center=(maxVert+minVert)/2;
+        
+    }
+    
+    void scale(float a,float b,float c){
+        for(int i=0; i<verts.size();i++){
+            verts[i].change(-center.x(),-center.y(),-center.z());
+            verts[i]=verts[i].mult(Vec(a,b,c));
+            verts[i].change(center.x(),center.y(),center.z());
+        }
+        maxVert.change(-center.x(),-center.y(),-center.z());
+        maxVert=maxVert.mult(Vec(a,b,c));
+        maxVert.change(center.x(),center.y(),center.z());
+        
+        
+        
+        minVert.change(-center.x(),-center.y(),-center.z());
+        minVert=minVert.mult(Vec(a,b,c));
+        minVert.change(center.x(),center.y(),center.z());
+        
+        center=(maxVert+minVert)/2;
+
+
+    }
+    
+    void translate(float x,float y,float z){
+        for(int i=0; i<verts.size();i++){
+            verts[i].change(x,y,z);
+            
+        }
+        maxVert.change(x,y,z);
+        minVert.change(x,y,z);
+        center=(maxVert+minVert)/2;
+
+    }
+    
     
     void placeHolder(){
         
     }
+    
     void setCenter(){
         center.set((getMaxVert().x()+getMinVert().x())/2, (getMaxVert().y()+getMinVert().y())/2, (getMaxVert().z()+getMinVert().z())/2);
     }
