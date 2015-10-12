@@ -19,6 +19,7 @@
 
 
 
+
 // Hierachical Model class
 class Model{
 public:
@@ -136,7 +137,7 @@ public:
 // Model using the loaded data file
 class PolyModel: public Model{
 public:
-    PolyModel(float x=0.0f,float y=0.0f,float z=-5.0f){
+    PolyModel (float x=0.0f,float y=0.0f,float z=-5.0f){
         for(int i=0; i<3; i++){
             maxVert.set(-9999999,-9999999,-9999999);
         }
@@ -210,9 +211,7 @@ public:
             polys[j]=poly;
         }
         
-        cout << vertex_count << endl;
-        cout << polys_count << endl;
-        
+                
         setNormals();
         setCenter();
         setVertexNormals();
@@ -289,7 +288,8 @@ public:
 
     }
     
-    void translate(float x,float y,float z){
+    void translate(float x,float y,float z,bool h=true){
+        // translate the object itself
         for(int i=0; i<verts.size();i++){
             verts[i].change(x,y,z);
             
@@ -297,6 +297,15 @@ public:
         maxVert.change(x,y,z);
         minVert.change(x,y,z);
         center=(maxVert+minVert)/2;
+        
+        // translate all of the decendents
+        if(h){
+            vector<PolyModel*> d=getPolyDecendents();
+            for(int j=0; j<d.size();j++){
+                d[j]->translate(x, y, z,false);
+            }
+        }
+        
 
     }
     
@@ -373,7 +382,7 @@ public:
             float t=(result[0]>0) ? result[0] : result[1] ;
             // get theta (d)
             float d=atan((ny*t+b)/(nx*t+a));
-            (d <0)? d+=2*PI : d;
+            (d <0)? d+=2*Util::Constants::PI : d;
             // get z
             float z=nz*t+c;
             // set the tex coord
@@ -430,6 +439,44 @@ public:
     }
     
     
+    void addPolyChild(PolyModel &m){
+        PolyChildren.push_back(&m);
+        m.PolyParent.push_back(this);
+    }
+
+    
+    PolyModel* getPolyParent(){
+        return PolyParent[0];
+    }
+    
+    vector<PolyModel*> getPolyDecendents(){
+        vector<PolyModel*> result;
+        
+        if(PolyChildren.size()==0){
+            //result.push_back(*this);
+            
+        }
+        else{
+            for(int i=0; i<PolyChildren.size();i++){
+                vector<PolyModel*> d=PolyChildren[i]->getPolyDecendents();
+                
+                for(int j=0; j<d.size();j++){
+                    result.push_back(d[j]);
+                }
+                result.push_back(PolyChildren[i]);
+                
+            }
+        }
+        
+        
+        
+        return result;
+    }
+    
+
+    
+    
+    
     
 protected:
     vector<Vec> verts;  // Vertex table
@@ -442,6 +489,9 @@ protected:
     Vec maxVert;
     Vec minVert;
     Vec center;
+    vector<PolyModel*> PolyParent;
+    vector<PolyModel*> PolyChildren;
+
     
 };
 

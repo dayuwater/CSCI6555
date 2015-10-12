@@ -47,9 +47,9 @@ int g_frameIndex = 0;
 int g_angle = 30;
 
 // position
-GLfloat x=0;
-GLfloat y=0;
-GLfloat z=0;
+float x=0;
+float y=0;
+float z=0;
 
 // keyframe identification
 GLint key=0;
@@ -113,6 +113,7 @@ void update( void ) {
         }
         
     }
+    x+=0.01f;
     
 }
 
@@ -177,7 +178,7 @@ void renderReady(){
 
 void HW2(){
     
-   // The Ground
+   // Initialize The Ground
     Cube c(3.0f,-0.0f,-2.0f,-2.0f);
     c._rx=g_angle/59.0f;
     c._qw=0.0f;
@@ -185,24 +186,26 @@ void HW2(){
     c._qb=1.0f;
     c.draw(1);
     
+    // Initialize The models
+    
     PolyModel torso(POSITION.x(),POSITION.y(),POSITION.z());
     string model_file = RESOURCE_DIR + string("torso.d2");
     ifstream car_fs(model_file);
     torso._ry=0.0f;
     torso.loadModel(car_fs);
     torso.scale(0.25f);
-    torso.translate(0.0f, 1.0f, 0.0f);
-    torso.draw();
+    torso.translate(0.0f, 1.0f, 0.0f,false);
+    
     
     PolyModel leg1(POSITION.x(),POSITION.y(),POSITION.z());
     string model2_file = RESOURCE_DIR + string("torso.d2");
     ifstream car2_fs(model2_file);
     leg1._ry=0.0f;
     leg1.loadModel(car2_fs);
-    torso.addChild(leg1);
+    torso.addPolyChild(leg1);
     leg1.scale(0.125f,0.5f,0.125f);
-    leg1.translate(-0.25f, 0.3f, 0.25f);
-    leg1.draw();
+    leg1.translate(-0.25f, 0.3f, 0.25f,false);
+    
 
     
     
@@ -211,9 +214,19 @@ void HW2(){
     ifstream car3_fs(model3_file);
     leg2._ry=0.0f;
     leg2.loadModel(car3_fs);
-    torso.addChild(leg2);
+    torso.addPolyChild(leg2);
     leg2.scale(0.125f,0.5f,0.125f);
-    leg2.translate(0.25f, 0.3f, -0.25f);
+    leg2.translate(0.25f, 0.3f, -0.25f,false);
+    
+    
+    // Translate the models
+    cout << x << endl;
+    vector<PolyModel> d=torso.getPolyDecendents();
+    torso.translate(x, y, z);
+    
+    // Draw the models
+    torso.draw();
+    leg1.draw();
     leg2.draw();
     
     

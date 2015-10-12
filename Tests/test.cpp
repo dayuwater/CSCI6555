@@ -48,14 +48,14 @@ TEST(Creation,Unit){
     
     // My examples
     /*EXPECT_FLOAT_EQ(0.43301270, qu1._w);
-    EXPECT_FLOAT_EQ(0.25, qu1._a);
-    EXPECT_FLOAT_EQ(0, qu1._b);
-    EXPECT_FLOAT_EQ(0, qu1._c);
-    
-    EXPECT_FLOAT_EQ(0.35355339059, qu2._w);
-    EXPECT_FLOAT_EQ(0, qu2._a);
-    EXPECT_FLOAT_EQ(0.35355339059, qu2._b);
-    EXPECT_FLOAT_EQ(0, qu2._c);*/
+     EXPECT_FLOAT_EQ(0.25, qu1._a);
+     EXPECT_FLOAT_EQ(0, qu1._b);
+     EXPECT_FLOAT_EQ(0, qu1._c);
+     
+     EXPECT_FLOAT_EQ(0.35355339059, qu2._w);
+     EXPECT_FLOAT_EQ(0, qu2._a);
+     EXPECT_FLOAT_EQ(0.35355339059, qu2._b);
+     EXPECT_FLOAT_EQ(0, qu2._c);*/
     
     
     // Example from slides
@@ -73,7 +73,7 @@ TEST(Creation,Unit){
     EXPECT_NEAR(0, qu6._a,0.00001);
     EXPECT_NEAR(0, qu6._b,0.00001);
     EXPECT_NEAR(1, qu6._c,0.00001);
-
+    
     
     
 }
@@ -81,14 +81,14 @@ TEST(Creation,Unit){
 TEST(Operations,Square){
     EXPECT_FLOAT_EQ(qu4.square(), 1.00000);
     EXPECT_FLOAT_EQ(qu5.square(), 1.00000);
-
+    
     EXPECT_FLOAT_EQ(qu1.square(), 1.00000);
     Quaternion j= Quaternion(2,1,3,5,true);
     EXPECT_FLOAT_EQ(j.square(), 1.000000);
     Quaternion k= Quaternion(2.9,7,23,87,true);
     EXPECT_FLOAT_EQ(k.square(), 1.000000);
-
-
+    
+    
 }
 
 TEST(Operations,Multiply){
@@ -124,7 +124,7 @@ TEST(Opeations,Inverse){
     Quaternion r=qu2.multiply(qu2.inverse());  // The identity of a quaternion is (1,0,0,0)
     
     
-
+    
     
 }
 
@@ -171,7 +171,7 @@ TEST(Spline, Create){
 TEST(CRS,Create){
     Animations::CatmulRomSpline s;
     //assert(false);
-
+    
 }
 
 TEST(BS,Create){
@@ -198,7 +198,7 @@ TEST(Model, AddChild){
     Model r(3,4,56);
     Model s(4,5,67);
     Model t(1,1,1);
-   
+    
     
     r.addChild(t);
     p.addChild(r);
@@ -236,8 +236,39 @@ TEST(Model,FormerAddChild){
     EXPECT_EQ(dm.size(),7);
     EXPECT_EQ(dm1.size(), 2);
     EXPECT_EQ(dm2.size(), 3);
-            
+    
 }
+
+TEST(PolyModel,FormerAddChild){
+    PolyModel *m=new PolyModel();
+    PolyModel *m1=new PolyModel();
+    PolyModel *m2=new PolyModel();
+    PolyModel *m11=new PolyModel();
+    PolyModel *m12=new PolyModel();
+    PolyModel *m21=new PolyModel();
+    PolyModel *m22=new PolyModel();
+    PolyModel *m23=new PolyModel();
+    
+   
+    m->addPolyChild(*m1);
+    m->addPolyChild(*m2);
+    m1->addPolyChild(*m11);
+    m1->addPolyChild(*m12);
+    m2->addPolyChild(*m21);
+    m2->addPolyChild(*m22);
+    m2->addPolyChild(*m23);
+    
+    vector<PolyModel*> dm=m->getPolyDecendents();
+    vector<PolyModel*> dm1=m1->getPolyDecendents();
+    vector<PolyModel*> dm2=m2->getPolyDecendents();
+    
+    EXPECT_EQ(dm.size(),7);
+    EXPECT_EQ(dm1.size(), 2);
+    EXPECT_EQ(dm2.size(), 3);
+    
+}
+
+
 
 
 int main(int argc, char * argv[])
