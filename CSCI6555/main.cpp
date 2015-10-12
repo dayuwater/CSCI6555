@@ -74,6 +74,7 @@ void init( void ) {
     int r2=tc.mult(2, 3);
     cout << r1 << endl;
     cout << r2 << endl;
+    x=-2.0f;
 }
 
 //================================
@@ -114,6 +115,9 @@ void update( void ) {
         
     }
     x+=0.01f;
+    if(x>=2.0f){
+        x=-2.0f;
+    }
     
 }
 
@@ -188,46 +192,46 @@ void HW2(){
     
     // Initialize The models
     
-    PolyModel torso(POSITION.x(),POSITION.y(),POSITION.z());
+    PolyModel* torso=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
     string model_file = RESOURCE_DIR + string("torso.d2");
     ifstream car_fs(model_file);
-    torso._ry=0.0f;
-    torso.loadModel(car_fs);
-    torso.scale(0.25f);
-    torso.translate(0.0f, 1.0f, 0.0f,false);
+    torso->_ry=0.0f;
+    torso->loadModel(car_fs);
+    torso->scale(0.25f);
+    torso->translate(0.0f, 1.0f, 0.0f,false);
     
     
-    PolyModel leg1(POSITION.x(),POSITION.y(),POSITION.z());
+    PolyModel* leg1=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
     string model2_file = RESOURCE_DIR + string("torso.d2");
     ifstream car2_fs(model2_file);
-    leg1._ry=0.0f;
-    leg1.loadModel(car2_fs);
-    torso.addPolyChild(leg1);
-    leg1.scale(0.125f,0.5f,0.125f);
-    leg1.translate(-0.25f, 0.3f, 0.25f,false);
+    leg1->_ry=0.0f;
+    leg1->loadModel(car2_fs);
+    torso->addPolyChild(*leg1);
+    leg1->scale(0.125f,0.5f,0.125f);
+    leg1->translate(-0.25f, 0.3f, 0.25f,false);
     
 
     
     
-    PolyModel leg2(POSITION.x(),POSITION.y(),POSITION.z());
+    PolyModel* leg2=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
     string model3_file = RESOURCE_DIR + string("torso.d2");
     ifstream car3_fs(model3_file);
-    leg2._ry=0.0f;
-    leg2.loadModel(car3_fs);
-    torso.addPolyChild(leg2);
-    leg2.scale(0.125f,0.5f,0.125f);
-    leg2.translate(0.25f, 0.3f, -0.25f,false);
+    leg2->_ry=0.0f;
+    leg2->loadModel(car3_fs);
+    torso->addPolyChild(*leg2);
+    leg2->scale(0.125f,0.5f,0.125f);
+    leg2->translate(0.25f, 0.3f, -0.25f,false);
     
     
     // Translate the models
     cout << x << endl;
-    vector<PolyModel> d=torso.getPolyDecendents();
-    torso.translate(x, y, z);
+    vector<PolyModel*> d=torso->getPolyDecendents();
+    torso->translate(x, y, z);
     
     // Draw the models
-    torso.draw();
-    leg1.draw();
-    leg2.draw();
+    torso->draw();
+    leg1->draw();
+    leg2->draw();
     
     
     //glutSolidTeapot(0.5f);

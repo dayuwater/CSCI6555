@@ -16,6 +16,7 @@
 #include <GLUT/GLUT.h>
 #include "Vector.h"
 #include "Util.h"
+#define PI 3.14159265358979
 
 
 
@@ -382,7 +383,8 @@ public:
             float t=(result[0]>0) ? result[0] : result[1] ;
             // get theta (d)
             float d=atan((ny*t+b)/(nx*t+a));
-            (d <0)? d+=2*Util::Constants::PI : d;
+            //(d <0)? (d+=2*PI) : d;
+            
             // get z
             float z=nz*t+c;
             // set the tex coord
