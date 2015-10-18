@@ -9,6 +9,7 @@
 #ifndef Util_h
 #define Util_h
 #include <math.h>
+#include <assert.h>
 #include "Vector.h"
 
 using namespace std;
@@ -37,6 +38,17 @@ namespace Util {
         
         return result;
         
+    }
+    
+    float rotateFunction(float angle,int mode=0){
+        //assert((Constants::PI/2)*sinf(angle)==0);
+        if(mode==0){
+            return Constants::PI+(Constants::PI/2)*sinf(angle);
+        }
+        else{
+            return Constants::PI+(Constants::PI/2)*cosf(angle);
+
+        }
     }
 }
 

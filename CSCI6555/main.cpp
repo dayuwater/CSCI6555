@@ -175,7 +175,7 @@ void renderReady(){
     // modelview matrix
     glMatrixMode( GL_MODELVIEW );
     
-    glDisable(GL_CULL_FACE);
+    
 
     
 }
@@ -199,7 +199,6 @@ void HW2(){
     ifstream car_fs(model_file);
     torso->_ry=0.0f;
     torso->loadModel(car_fs);
-    //torso->translate(POSITION.x(),POSITION.y(),POSITION.z(),false);
     torso->scale(0.25f);
     torso->translate(0.0f, 1.0f, 0.0f,false);
     
@@ -209,15 +208,17 @@ void HW2(){
     ifstream car2_fs(model2_file);
     leg1->_ry=0.0f;
     leg1->loadModel(car2_fs);
-    //leg1->translate(POSITION.x(),POSITION.y(),POSITION.z(),false);
-
+   
     torso->addPolyChild(*leg1);
     leg1->scale(0.125f,0.5f,0.125f);
     
     leg1->translateToParent(0.0f, 0.0f, 0.0f);
-    
-    //leg1->translateToParent(-0.25f, dis/2.0f, 0.25f);
-    
+    {
+        Vec a(leg1->getCenter().x(),leg1->getMinVert().y(),leg1->getCenter().z());
+        leg1->attach=a;
+        Vec b(torso->getMinVert().x(),torso->getMinVert().y(),torso->getMinVert().z());
+        leg1->parentAttach=b;
+    }
    
     
 
@@ -228,12 +229,18 @@ void HW2(){
     ifstream car3_fs(model3_file);
     leg2->_ry=0.0f;
     leg2->loadModel(car3_fs);
-    //leg2->translate(POSITION.x(),POSITION.y(),POSITION.z(),false);
-
+    
     torso->addPolyChild(*leg2);
     leg2->scale(0.125f,0.5f,0.125f);
    
     leg2->translateToParent(0.0f,0.0f,0.0f);
+    {
+        Vec a(leg2->getCenter().x(),leg2->getMinVert().y(),leg2->getCenter().z());
+        leg2->attach=a;
+        Vec b(torso->getMaxVert().x(),torso->getMinVert().y(),torso->getMaxVert().z());
+        leg2->parentAttach=b;
+    }
+
     
     // Translate the models
     cout << x << endl;
@@ -247,8 +254,10 @@ void HW2(){
     else {
         torso->translate(x, y, z);
     }*/
-    leg1->rotate2(g_angle/59.0f);
-    leg2->rotate2(-g_angle/59.0f);
+    float rAngle=Util::rotateFunction(g_angle/59.0f);
+    float rAngle2=Util::rotateFunction(g_angle/59.0f,1);
+    leg1->rotate2(rAngle);
+    leg2->rotate2(rAngle2);
 
     torso->translate(x, y, z);
     

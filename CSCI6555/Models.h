@@ -221,29 +221,13 @@ public:
         
         
     }
-    // rotate about parent
-    void rotate(float angle, int mode=0){
-        float xd=center.x()-PolyParent[0]->minVert.x();
-        float yd=center.y()-PolyParent[0]->minVert.y();
-        float zd=center.z()-PolyParent[0]->minVert.z();
-        float xdc=center.x()-PolyParent[0]->center.x();
-        float ydc=center.y()-PolyParent[0]->center.y();
-        float zdc=center.z()-PolyParent[0]->center.z();
-        yd=getHeight();
-        float mty[16]={1,0,0,0,0,1,0,-yd,0,0,1,0,0,0,0,1};
-        float mty2[16]={1,0,0,xd,0,1,0,yd,0,0,1,zd,0,0,0,1};
-        float mtx[16]={1,0,0,-xd/2,0,1,0,0,0,0,1,0,0,0,0,1};
-        Matrix TY(mty,4,4);
-        Matrix TY2(mty2,4,4);
+    // rotation
+    void rotate(float angle){
         float r[16]={1,0,0,0,0,cosf(angle),-sinf(angle),0,0,sinf(angle),cosf(angle),0,0,0,0,1};
-        float ra[16]={cosf(angle),-sinf(angle),0,0,0,1,0,0,0,0,sinf(angle),cosf(angle),0,0,0,1};
-
+       
         
-        Matrix R(r,4,4);
-        Matrix M=TY.multiply(R).multiply(TY);
-        if(mode==1){
-            M=R;
-        }
+        Matrix M(r,4,4);
+        
         //Matrix M=R.multiply(TY);
         //Matrix M=R;
         for(int i=0; i<verts.size();i++){
@@ -273,17 +257,12 @@ public:
         
         
     }
-    
+    // Rotate To the parent
     void rotate2(float angle){
-        float rcx=(getMaxVert().x()-getMinVert().x())/2;
-        float rcy=(getMaxVert().y());
-        float rcz=(getMaxVert().z()-getMinVert().z())/2;
-        translate(-rcx, -rcy, -rcz);
-        rotate(angle,1);
-        float rtx=(PolyParent[0]->getMinVert().x());
-        float rty=(PolyParent[0]->getMinVert().y());
-        float rtz=(PolyParent[0]->getMinVert().z());
-        translate(rtx, rty, rtz);
+       
+        translate(-attach.x(), -attach.y(), -attach.z());
+        rotate(angle);
+        translate(parentAttach.x(), parentAttach.y(), parentAttach.z());
 
     }
     void draw(int mode=0)
@@ -558,6 +537,9 @@ public:
     float getHeight(){
         return maxVert.y()-minVert.y();
     }
+    
+    Vec attach; // attach point of this model to the parent model
+    Vec parentAttach; // the attach point of the parent model to this model
     
     
     
