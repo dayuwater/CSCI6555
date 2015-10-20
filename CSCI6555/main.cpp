@@ -84,7 +84,7 @@ void update( void ) {
     // do something before rendering...
     
     // rotation angle
-    g_angle = ( g_angle + 5 ) % 360;
+    g_angle = ( g_angle + 2 ) % 360;
     cout << key << endl;
     
     // switch keyframes
@@ -184,8 +184,30 @@ void renderReady(){
 
 void HW2(){
     
+    // Frames of different objects
+    GLfloat frameX[7];
+    GLfloat frameY[7];
+    GLfloat frameZ[7];
+    
+    
+    for(int j=0; j<7; j++){
+        frameX[j]=0.0f+2.0f*cosf(PI/3*j);
+        frameY[j]=0.5f;
+        frameZ[j]=-1.0f+2.0f*sinf(PI/3*j);
+        
+        
+    }
+    
+    Animations::CatmulRomSpline cat;
+    for(int i=0; i<7; i++){
+        cat.addPosWithAngle(frameX[i], frameY[i], frameZ[i], 0, 0, 0);
+    }
+    
+    
+
+    
    // Initialize The Ground
-    Cube c(3.0f,-0.0f,-2.0f,-2.0f);
+    Cube c(4.0f,-0.0f,-2.0f,-2.0f);
     c._rx=g_angle/59.0f;
     c._qw=0.0f;
     c._qa=1.0f;
@@ -243,7 +265,7 @@ void HW2(){
 
     
     // Translate the models
-    cout << x << endl;
+    
     vector<PolyModel*> d=torso->getPolyDecendents();
     
     /*
@@ -258,6 +280,10 @@ void HW2(){
     float rAngle2=Util::rotateFunction(g_angle/59.0f,1);
     leg1->rotate2(rAngle);
     leg2->rotate2(rAngle2);
+    
+    x=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[0];
+    y=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[1];
+    z=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[2];
 
     torso->translate(x, y, z);
     
