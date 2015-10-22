@@ -11,6 +11,7 @@
 
 #include <OpenGL/OpenGL.h>
 #include <vector>
+#include "Matrix.h"
 #include "math.h"
 
 using namespace std;
@@ -61,13 +62,40 @@ public:
         return q;
     }
     
-    //get the rotation matrix
+    //get the rotation matrix (Depricated)
     vector<GLfloat> rotationMatrix(){
         vector<GLfloat> result;
         
         
         return result;
     }
+    Matrix rotMatrix(){
+        float result[16];
+        result[0]=1-2*_b*_b-2*_c*_c;
+        result[1]=2*_a*_b-2*_w*_c;
+        result[2]=2*_a*_c+2*_w*_b;
+        result[3]=0;
+        
+        result[5]=1-2*_a*_a-2*_c*_c;
+        result[4]=2*_a*_b+2*_w*_c;
+        result[6]=2*_b*_c-2*_w*_a;
+        result[7]=0;
+        
+        result[10]=1-2*_a*_a-2*_b*_b;
+        result[8]=2*_a*_c-2*_w*_b;
+        result[9]=2*_b*_c+2*_w*_a;
+        result[11]=0;
+        
+        result[12]=0;
+        result[13]=0;
+        result[14]=0;
+        result[15]=1;
+
+        Matrix m(result,4,4);
+        return m;
+    }
+    
+    
     
     GLfloat* rMatrix(){
         GLfloat* result=(GLfloat*)malloc(16*sizeof(GLfloat));

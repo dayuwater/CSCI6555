@@ -51,6 +51,12 @@ float x=0;
 float y=0;
 float z=0;
 
+// position in last frame
+float px=0;
+float py=0;
+float pz=0;
+
+
 // keyframe identification
 GLint key=0;
 GLint maxKey=7;
@@ -85,7 +91,7 @@ void update( void ) {
     
     // rotation angle
     g_angle = ( g_angle + 2 ) % 360;
-    cout << key << endl;
+    //cout << key << endl;
     
     // switch keyframes
     if(g_angle % 360==0){
@@ -341,16 +347,23 @@ void HW2(){
     x=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[0];
     y=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[1];
     z=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[2];
+    
+    float dx=x-px;
+    float dz=z-pz;
+    
+    float angle=-atanf(dz/dx)+PI/2;
+    cout << angle*(180.0f/PI)<< endl;
+    
+    px=x;
+    py=y;
+    pz=z;
 
     torso->translate(x, y, z);
     
+    torso->selfRotate(0,angle,0,true);
+    
     // Draw the models
-    torso->draw();
-    leg1->draw();
-    leg2->draw();
-    arm1->draw();
-    arm2->draw();
-    head->draw();
+    torso->draw(0,true);
     
     
     //glutSolidTeapot(0.5f);

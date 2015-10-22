@@ -221,12 +221,23 @@ public:
         
         
     }
-    // rotation
-    void rotate(float angle){
-        float r[16]={1,0,0,0,0,cosf(angle),-sinf(angle),0,0,sinf(angle),cosf(angle),0,0,0,0,1};
-       
+    // Rotation Functions:
+    // rotate according to fixed angle
+    void rotate(float x=0, float y=0, float z=0,bool h=false){
+        Quaternion q=Quaternion::fixedAngle(x, y, z);
         
-        Matrix M(r,4,4);
+        //float r[16]={1,0,0,0,0,cosf(angle),-sinf(angle),0,0,sinf(angle),cosf(angle),0,0,0,0,1};
+       
+        rotate(q,h);
+
+        
+        
+        
+    }
+    // rotate according to quaternion
+    void rotate(Quaternion q,bool h=false){
+        
+        Matrix M=q.rotMatrix();
         
         //Matrix M=R.multiply(TY);
         //Matrix M=R;
@@ -252,11 +263,19 @@ public:
         center=(minVert+maxVert)/2;
         //translate(0, center.y()-maxVert.y(), 0,false);
         
+        // rotate all of the decendents
+        if(h){
+            vector<PolyModel*> d=getPolyDecendents();
+            for(int j=0; j<d.size();j++){
+                d[j]->rotate(q,false);
+            }
+        }
+        
 
         
-        
-        
     }
+    
+    
     // Rotate To the parent
     void rotate2(float angle){
        
@@ -265,7 +284,31 @@ public:
         translate(parentAttach.x(), parentAttach.y(), parentAttach.z());
 
     }
-    void draw(int mode=0)
+    // Rotate to the center of model
+    void selfRotate(float x,float y,float z,bool h=false){
+        Quaternion q=Quaternion::fixedAngle(x, y, z);
+        selfRotate(q,h);
+    }
+    void selfRotate(Quaternion q,bool h=false){
+        Vec distance=center;
+        translate(-distance.x(), -distance.y(), -distance.z());
+        rotate(q,false);
+        translate(distance.x(), distance.y(), distance.z());
+        if(h){
+            vector<PolyModel*> d=getPolyDecendents();
+            for(int j=0; j<d.size();j++){
+                d[j]->translate(-distance.x(), -distance.y(), -distance.z());
+                d[j]->rotate(q,false);
+                d[j]->translate(distance.x(), distance.y(), distance.z());
+
+            }
+ 
+        }
+       
+        
+    }
+    
+    void draw(int mode=0, bool h=false)
     {
         
         glLoadIdentity();
@@ -290,6 +333,15 @@ public:
             }
         }
         glEnd();
+        
+        // draw all of the decendents
+        if(h){
+            vector<PolyModel*> d=getPolyDecendents();
+            for(int j=0; j<d.size();j++){
+                d[j]->draw(0,false);
+            }
+        }
+
     }
     void scale(float f){
         for(int i=0; i<verts.size();i++){
