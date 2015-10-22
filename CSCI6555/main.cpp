@@ -60,7 +60,7 @@ bool keyInc=true; // see if the key is increasing
 // 1=HW1
 // 2=HW2
 // Going to use one project for all homeworks
-GLint mode=1;
+GLint mode=2;
 
 
 
@@ -262,6 +262,60 @@ void HW2(){
         Vec b(torso->getMaxVert().x(),torso->getMinVert().y(),torso->getMaxVert().z());
         leg2->parentAttach=b;
     }
+    
+    PolyModel* arm1=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
+    string model4_file = RESOURCE_DIR + string("torso.d2");
+    ifstream car4_fs(model4_file);
+    arm1->_ry=0.0f;
+    arm1->loadModel(car4_fs);
+    
+    torso->addPolyChild(*arm1);
+    arm1->scale(0.125f,0.5f,0.125f);
+    
+    arm1->translateToParent(0.0f,0.0f,0.0f);
+    {
+        Vec a(arm1->getMaxVert().x(),arm1->getMaxVert().y(),arm1->getCenter().z());
+        arm1->attach=a;
+        Vec b(torso->getMinVert().x(),torso->getMaxVert().y(),torso->getMinVert().z());
+        arm1->parentAttach=b;
+    }
+    
+    PolyModel* arm2=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
+    string model5_file = RESOURCE_DIR + string("torso.d2");
+    ifstream car5_fs(model5_file);
+    arm2->_ry=0.0f;
+    arm2->loadModel(car5_fs);
+    
+    torso->addPolyChild(*arm2);
+    arm2->scale(0.125f,0.5f,0.125f);
+    
+    arm2->translateToParent(0.0f,0.0f,0.0f);
+    {
+        Vec a(arm2->getMinVert().x(),arm2->getMaxVert().y(),arm2->getCenter().z());
+        arm2->attach=a;
+        Vec b(torso->getMaxVert().x(),torso->getMaxVert().y(),torso->getMaxVert().z());
+        arm2->parentAttach=b;
+    }
+    
+    PolyModel* head=new PolyModel(POSITION.x(),POSITION.y(),POSITION.z());
+    string model6_file = RESOURCE_DIR + string("torso.d2");
+    ifstream car6_fs(model6_file);
+    head->_ry=0.0f;
+    head->loadModel(car6_fs);
+    
+    torso->addPolyChild(*head);
+    head->scale(0.125f,0.125f,0.125f);
+    
+    head->translateToParent(0.0f,0.0f,0.0f);
+    {
+        Vec a(head->getCenter().x(),head->getMinVert().y(),head->getCenter().z());
+        head->attach=a;
+        Vec b(torso->getCenter().x(),torso->getMaxVert().y(),torso->getMaxVert().z());
+        head->parentAttach=b;
+    }
+
+
+
 
     
     // Translate the models
@@ -280,6 +334,9 @@ void HW2(){
     float rAngle2=Util::rotateFunction(g_angle/59.0f,1);
     leg1->rotate2(rAngle);
     leg2->rotate2(rAngle2);
+    arm1->rotate2(rAngle2);
+    arm2->rotate2(rAngle);
+    head->rotate2(rAngle);
     
     x=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[0];
     y=cat.interpolateUsingFixedAngle((key+g_angle/360.0f))[1];
@@ -291,6 +348,9 @@ void HW2(){
     torso->draw();
     leg1->draw();
     leg2->draw();
+    arm1->draw();
+    arm2->draw();
+    head->draw();
     
     
     //glutSolidTeapot(0.5f);
