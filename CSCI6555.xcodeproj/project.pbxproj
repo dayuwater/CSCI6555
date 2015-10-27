@@ -54,6 +54,7 @@
 		B7E1A5361B991C9200AC0E89 /* test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test.cpp; sourceTree = "<group>"; };
 		B7E1A53C1B991E4000AC0E89 /* TestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClass.h; sourceTree = "<group>"; };
 		B7E1A53D1BA378E700AC0E89 /* Quaternion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
+		B7E3AD991BE0315000346597 /* HW2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HW2.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +114,7 @@
 				B77322E51BC70EBC00309BB7 /* HW1.cpp */,
 				B77322E81BC9C6C800309BB7 /* Vector.h */,
 				B77322E91BC9C7F300309BB7 /* Util.h */,
+				B7E3AD991BE0315000346597 /* HW2.cpp */,
 			);
 			path = CSCI6555;
 			sourceTree = "<group>";

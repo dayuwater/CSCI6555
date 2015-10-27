@@ -43,10 +43,10 @@ namespace Util {
     float rotateFunction(float angle,int mode=0){
         //assert((Constants::PI/2)*sinf(angle)==0);
         if(mode==0){
-            return Constants::PI+(Constants::PI/2)*sinf(angle);
+            return Constants::PI+(Constants::PI/4)*sinf(angle);
         }
         else{
-            return Constants::PI+(Constants::PI/2)*cosf(angle);
+            return Constants::PI-(Constants::PI/4)*sinf(angle);
 
         }
     }
