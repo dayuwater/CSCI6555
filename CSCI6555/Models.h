@@ -96,6 +96,90 @@ public:
     }
     
     
+    // physics functions
+    // ------------------------------
+    //  Part 1: getters and setters
+    // ------------------------------
+    float getMass(){
+        return _mass;
+    }
+    void setMass(float mass){
+        if(mass<=0){
+            return;
+        }
+        else{
+            _mass=mass;
+        }
+    }
+    
+    // the name are in pure physics concepts
+    // velocity=speed vector, speed=magnitude
+    Vec getVelocity(){
+        return _speed;
+    }
+    float getSpeed(){
+        return _speed.length();
+    }
+    void setVelocity(Vec v){
+        _speed=v;
+    }
+    
+    
+    Vec getAcceleration(){
+        return _acc;
+    }
+    float getAccMagitude(){
+        return _acc.length();
+    }
+    void setAcceleration(Vec a){
+        _acc=a;
+    }
+    
+    // ------------------------------
+    //  Part 2: Force System
+    // ------------------------------
+    
+    void addForce(Quaternion f){
+        _forces.push_back(f);
+    }
+    // get the sum of forces in x, y and z direction
+    Vec getAxisForces(){
+        Vec result;
+        float x=0;
+        float y=0;
+        float z=0;
+        for(int i=0; i<_forces.size();i++){
+            
+        }
+        result.set(x,y,z);
+        return result;
+    }
+    // set the acceleration according to force
+    void setAccByForce(){
+        Vec f=getAxisForces();
+        _acc=f/_mass; // -F-> = m -a->
+    }
+    
+    // ------------------------------
+    //  Part 3: Numerical Integration
+    // ------------------------------
+    
+    // "integrate" acceleration to get velocity
+    void setNewVelocity(){
+        _speed=_speed+_acc;
+    }
+    
+    // "integrate" velocity to get position
+    void setNewPosition(){
+        _x=_x+_speed.x();
+        _y=_y+_speed.y();
+        _z=_z+_speed.z();
+    }
+    
+
+    
+    
+    
     // position of the model
     float _x;
     float _y;
@@ -109,9 +193,20 @@ public:
     float _qa;
     float _qb;
     float _qc;
+    
+    
 protected:
     vector<Model> parent;
     vector<Model> children;
+    
+    // physical properties
+    float _mass;
+    Vec _speed;
+    Vec _acc; // acceleration
+    vector<Quaternion> _forces; // since force consist of magitude of the force and the direction of force
+    // it is best to be represented by a quaternion, in this case rotational rules does not apply
+    
+
     
     
     
@@ -134,6 +229,26 @@ public:
         glutSolidCube(size);
     }
 };
+
+
+class Teapot : public Model{
+public:
+    Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f){
+        size=sizee;
+        _x=x;
+        _y=y;
+        _z=z;
+    }
+    float size;
+    
+    void draw(int mode=0){
+        glLoadIdentity();
+        glTranslatef(_x, _y, _z);
+        selfRotate(mode);
+        glutSolidTeapot(size);
+    }
+};
+
 
 // Model using the loaded data file
 class PolyModel: public Model{

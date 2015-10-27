@@ -189,7 +189,7 @@ void renderReady(){
 
 
 void HW3(){
-    Cube c;
+    Teapot c;
     c.draw();
     
 }
