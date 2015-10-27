@@ -188,6 +188,12 @@ void renderReady(){
 }
 
 
+void HW3(){
+    Cube c;
+    c.draw();
+    
+}
+
 
 
 void render( void ) {
@@ -197,6 +203,9 @@ void render( void ) {
     }
     else if(mode==2){
         HW2(g_angle,key,maxKey,x,y,z,px,py,pz);
+    }
+    else if(mode==3){
+        HW3();
     }
     
     glutSwapBuffers();
