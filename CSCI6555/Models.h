@@ -149,7 +149,19 @@ public:
         float y=0;
         float z=0;
         for(int i=0; i<_forces.size();i++){
-            
+            // the vertical angle=tan-1(z/(x^2+y^2)^(1/2))
+            float theta=atanf((_forces[i]._c)/sqrtf(_forces[i]._a*_forces[i]._a+_forces[i]._b*_forces[i]._b));
+            // the horizontal angle=tan-1(y/x)
+            if(isnan(theta)){
+                theta=PI/2;
+            }
+            float phi=atanf(_forces[i]._b/_forces[i]._a);
+            if((isnan(phi))){
+                phi=PI/2;
+            }
+            x+=_forces[i]._w*cosf(theta)*cosf(phi);
+            y+=_forces[i]._w*cosf(theta)*sinf(phi);
+            z+=_forces[i]._w*sinf(theta);
         }
         result.set(x,y,z);
         return result;

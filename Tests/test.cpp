@@ -270,6 +270,69 @@ TEST(PolyModel,FormerAddChild){
 
 
 
+    
+TEST(Physics,sumForce1){
+    Model *m=new Model();
+    m->setMass(400.0f);
+    Quaternion q1(120,1,0,0,false);
+    Quaternion q2(230,0,1,0,false);
+    Quaternion q3(340,1,0,1,false);
+    
+    m->addForce(q1);
+    m->addForce(q2);
+    m->addForce(q3);
+    
+    Vec f=m->getAxisForces();
+    m->setAccByForce();
+    
+    
+    
+    EXPECT_FLOAT_EQ(360.416,f.x());
+    EXPECT_FLOAT_EQ(230,f.y());
+    EXPECT_FLOAT_EQ(0,f.z());
+    
+   
+
+    
+    
+    
+}
+
+TEST(Physics,sumForce2){
+    Model *m=new Model();
+    Quaternion q1(10,1,0,0,false);
+    Quaternion q2(20,0,1,0,false);
+    Quaternion q3(30,0,0,1,false);
+    Quaternion q4(10,1,1,0,false);
+    Quaternion q5(20,0,1,1,false);
+    Quaternion q6(30,1,0,1,false);
+    Quaternion q7(40,1,1,1,false);
+    
+    m->addForce(q1);
+    m->addForce(q2);
+    m->addForce(q3);
+    m->addForce(q4);
+    m->addForce(q5);
+    m->addForce(q6);
+    m->addForce(q7);
+    
+    
+    Vec f=m->getAxisForces();
+    EXPECT_FLOAT_EQ(10,f.x());
+    EXPECT_FLOAT_EQ(20,f.y());
+    EXPECT_FLOAT_EQ(30,f.z());
+    
+    
+    
+    
+    
+    
+}
+
+
+
+
+
 
 int main(int argc, char * argv[])
 {
