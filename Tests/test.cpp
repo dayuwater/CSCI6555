@@ -274,9 +274,9 @@ TEST(PolyModel,FormerAddChild){
 TEST(Physics,sumForce1){
     Model *m=new Model();
     m->setMass(400.0f);
-    Quaternion q1(120,1,0,0,false);
+    Quaternion q1(-120,1,0,0,false);
     Quaternion q2(230,0,1,0,false);
-    Quaternion q3(340,1,0,1,false);
+    Quaternion q3(340,1,0,0,false);
     
     m->addForce(q1);
     m->addForce(q2);
@@ -287,7 +287,7 @@ TEST(Physics,sumForce1){
     
     
     
-    EXPECT_FLOAT_EQ(360.416,f.x());
+    EXPECT_FLOAT_EQ(220,f.x());
     EXPECT_FLOAT_EQ(230,f.y());
     EXPECT_FLOAT_EQ(0,f.z());
     

@@ -142,6 +142,9 @@ public:
     void addForce(Quaternion f){
         _forces.push_back(f);
     }
+    void addForce(Vec v){
+        
+    }
     // get the sum of forces in x, y and z direction
     Vec getAxisForces(){
         Vec result;
@@ -157,7 +160,9 @@ public:
             }
             float phi=atanf(_forces[i]._b/_forces[i]._a);
             if((isnan(phi))){
+                
                 phi=PI/2;
+                
             }
             x+=_forces[i]._w*cosf(theta)*cosf(phi);
             y+=_forces[i]._w*cosf(theta)*sinf(phi);
@@ -176,16 +181,23 @@ public:
     //  Part 3: Numerical Integration
     // ------------------------------
     
+    
+    void refresh(float dt=1.0f){
+        setNewVelocity(dt);
+        setNewPosition(dt);
+    }
+    
     // "integrate" acceleration to get velocity
-    void setNewVelocity(){
-        _speed=_speed+_acc;
+    void setNewVelocity(float dt=1.0f){
+        _speed=_speed+_acc*dt;
     }
     
     // "integrate" velocity to get position
-    void setNewPosition(){
-        _x=_x+_speed.x();
-        _y=_y+_speed.y();
-        _z=_z+_speed.z();
+    void setNewPosition(float dt=1.0f){
+        
+        _x=_x+_speed.x()*dt;
+        _y=_y+_speed.y()*dt;
+        _z=_z+_speed.z()*dt;
     }
     
 

@@ -69,7 +69,15 @@ bool keyInc=true; // see if the key is increasing
 // Going to use one project for all homeworks
 GLint mode=2;
 
+Teapot* teapot;
+Teapot* teapot2;
+Teapot* teapot3;
+Teapot* teapot4;
 
+Cube* Floor;
+Cube* ceiling;
+Cube* leftWall;
+Cube* rightWall;
 
 //================================
 // init
@@ -82,6 +90,48 @@ void init( void ) {
     cout << r1 << endl;
     cout << r2 << endl;
     x=-2.0f;
+    
+    teapot=new Teapot(0.25f,0.0f,0.0f,-5.0f);
+    //teapot->setVelocity(Vec(0,0.5,0.5));
+    teapot->setMass(1.0f);
+    teapot->addForce(Quaternion(0.01, 0, -1.5, 0,false)); // regular gravity
+    //teapot->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot->setVelocity(Vec(0.06,0,0));
+    teapot->setAccByForce();
+    
+    
+    teapot2=new Teapot(0.25f,0.0f,-0.0f,-5.0f);
+    //teapot2->setVelocity(Vec(0,-0.5,0.5));
+    teapot2->setMass(1.0f);
+    teapot2->addForce(Quaternion(0.1, 0, 1.5, 0,false)); // regular gravity
+    teapot2->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot2->setAccByForce();
+    
+    
+    teapot3=new Teapot(0.25f,0.0f,0.0f,-5.0f);
+    
+    teapot3->setMass(1.0f);
+    teapot3->setVelocity(Vec(0,0,0));
+    teapot3->addForce(Quaternion(0.1, 3, 0, 0,false)); // regular gravity
+    //teapot3->addForce(Quaternion(0.02, 10.5, 0, 0.5,false));
+    teapot3->setAccByForce();
+    
+    teapot4=new Teapot(0.25f,-0.0f,0.0f,-5.0f);
+    
+    teapot4->setMass(1.0f);
+    //teapot4->setVelocity(Vec(0,-10,0));
+    teapot4->addForce(Quaternion(-0.1, 3, 0, 0,false)); // regular gravity
+    //teapot4->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot4->setAccByForce();
+    
+    Floor=new Cube(3.0f,0.0f,-3.0f,-5.0f);
+    ceiling=new Cube(3.0f,0.0f,3.0f,-5.0f);
+    leftWall=new Cube(3.0f,-3.0f,0.0f,-5.0f);
+    rightWall=new Cube(3.0f,3.0f,0.0f,-5.0f);
+
+
+
+    
 }
 
 //================================
@@ -119,6 +169,10 @@ void update( void ) {
                 key=0;
             }
         }
+        //teapot->_y=2.0f;
+        //teapot2->_y=-2.0f;
+        //teapot3->_y=2.0f;
+        //teapot4->_y=-2.0f;
         
     }
     x+=0.005f;
@@ -189,8 +243,31 @@ void renderReady(){
 
 
 void HW3(){
-    Teapot c;
-    c.draw();
+    
+    teapot->refresh(0.1f);
+    cout << teapot->_y << endl;
+    teapot->draw();
+    
+    
+    teapot2->refresh(0.1f);
+    //cout << teapot->_y << endl;
+    //teapot2->draw();
+    
+    teapot3->refresh(0.1f);
+    //cout << teapot->_y << endl;
+    //teapot3->draw();
+
+    
+    teapot4->refresh(0.1f);
+    //cout << teapot->_y << endl;
+    //teapot4->draw();
+    
+    Floor->draw();
+    ceiling->draw();
+    leftWall->draw();
+    rightWall->draw();
+
+    
     
 }
 
