@@ -79,6 +79,8 @@ Cube* ceiling;
 Cube* leftWall;
 Cube* rightWall;
 
+Model* world; // abstract model, just use for collision detection
+
 //================================
 // init
 //================================
@@ -128,6 +130,21 @@ void init( void ) {
     ceiling=new Cube(3.0f,0.0f,3.0f,-5.0f);
     leftWall=new Cube(3.0f,-3.0f,0.0f,-5.0f);
     rightWall=new Cube(3.0f,3.0f,0.0f,-5.0f);
+    
+    world=new Model();
+    // use hierarchial model for the container of all the models for collision detection
+    // may implement hierarchial collision detection too
+    world->addChild(*Floor);
+    
+    world->addChild(*ceiling);
+    world->addChild(*leftWall);
+    world->addChild(*rightWall);
+    world->addChild(*teapot);
+    //world->addChild(*teapot2);
+    //world->addChild(*teapot3);
+    //world->addChild(*teapot4);
+    
+    
 
 
 
@@ -249,16 +266,16 @@ void HW3(){
     teapot->draw();
     
     
-    teapot2->refresh(0.1f);
+    //teapot2->refresh(0.1f);
     //cout << teapot->_y << endl;
     //teapot2->draw();
     
-    teapot3->refresh(0.1f);
+    //teapot3->refresh(0.1f);
     //cout << teapot->_y << endl;
     //teapot3->draw();
 
     
-    teapot4->refresh(0.1f);
+    //teapot4->refresh(0.1f);
     //cout << teapot->_y << endl;
     //teapot4->draw();
     

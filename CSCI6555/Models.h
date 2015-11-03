@@ -46,8 +46,8 @@ public:
         
     }
     void addChild(Model &m){
-        children.push_back(m);
-        m.parent.push_back(*this);
+        children.push_back(&m);
+        m.parent.push_back(this);
     }
     // rotate about the parent
     void rotate(float angle){
@@ -67,12 +67,17 @@ public:
         
     }
     
-    Model getParent(){
+    Model* getParent(){
         return parent[0];
     }
     
-    vector<Model> getDecendents(){
-        vector<Model> result;
+    
+    
+    
+    
+    
+    vector<Model*> getDecendents(){
+        vector<Model*> result;
         
         if(children.size()==0){
             //result.push_back(*this);
@@ -80,7 +85,7 @@ public:
         }
         else{
             for(int i=0; i<children.size();i++){
-                vector<Model> d=children[i].getDecendents();
+                vector<Model*> d=children[i]->getDecendents();
                 
                 for(int j=0; j<d.size();j++){
                     result.push_back(d[j]);
@@ -185,6 +190,9 @@ public:
     void refresh(float dt=1.0f){
         setNewVelocity(dt);
         setNewPosition(dt);
+        if(checkCollide()){
+            _speed=_speed*(-0.9); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+        }
     }
     
     // "integrate" acceleration to get velocity
@@ -199,6 +207,9 @@ public:
         _y=_y+_speed.y()*dt;
         _z=_z+_speed.z()*dt;
     }
+    
+   
+    
     
 
     
@@ -220,8 +231,10 @@ public:
     
     
 protected:
-    vector<Model> parent;
-    vector<Model> children;
+    vector<Model*> parent;
+    vector<Model*> children;
+    
+    float _radius;
     
     // physical properties
     float _mass;
@@ -229,6 +242,25 @@ protected:
     Vec _acc; // acceleration
     vector<Quaternion> _forces; // since force consist of magitude of the force and the direction of force
     // it is best to be represented by a quaternion, in this case rotational rules does not apply
+    
+    // collision detection using bounding sphere
+    bool checkCollide(){
+        vector<Model*> checkable=parent[0]->children;
+        for(int i=0; i<checkable.size();i++){
+            if(checkable[i]!=this){
+                Vec FOI=Vec(checkable[i]->_x,checkable[i]->_y,checkable[i]->_z);
+                Vec here=Vec(_x,_y,_z);
+                Vec distance=here-FOI;
+                float dis=distance.length();
+                // if distance of the center is less than the sum of radius, there must be intersection
+                if(dis</*_radius+checkable[i]->_radius*/2){
+                    return true;
+                }
+            }
+        }
+        return false;
+        
+    }
     
 
     
@@ -243,6 +275,7 @@ public:
         _x=x;
         _y=y;
         _z=z;
+        _radius=size*sqrtf(2.0f);
     }
     float size;
     
@@ -262,6 +295,7 @@ public:
         _x=x;
         _y=y;
         _z=z;
+        _radius=size;
     }
     float size;
     
