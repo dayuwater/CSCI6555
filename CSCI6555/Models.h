@@ -191,8 +191,16 @@ public:
         setNewVelocity(dt);
         setNewPosition(dt);
         if(checkCollide()){
-            _speed=_speed*(-0.9); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            Vec newSpeed;
+            newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            //_speed=newSpeed;
+            _speed=_speed*(-1.1f);
         }
+        /*else if(checkCollideCube()){
+            Vec newSpeed;
+            newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            _speed=newSpeed;
+        }*/
     }
     
     // "integrate" acceleration to get velocity
@@ -230,6 +238,8 @@ public:
     float _qc;
     
     
+    float size;
+    
 protected:
     vector<Model*> parent;
     vector<Model*> children;
@@ -253,7 +263,7 @@ protected:
                 Vec distance=here-FOI;
                 float dis=distance.length();
                 // if distance of the center is less than the sum of radius, there must be intersection
-                if(dis</*_radius+checkable[i]->_radius*/2){
+                if(dis<_radius+checkable[i]->_radius/2){
                     return true;
                 }
             }
@@ -261,13 +271,57 @@ protected:
         return false;
         
     }
+    // collsion detection using bounding cube
+    bool checkCollideCube(){
+        vector<Model*> checkable=parent[0]->children;
+        for(int i=0; i<checkable.size();i++){
+            if(checkable[i]!=this){
+                Vec min;
+                float size=checkable[i]->size;
+                min.set(checkable[i]->_x-size,checkable[i]->_y-size,checkable[i]->_z-size);
+                Vec max;
+                max.set(checkable[i]->_x+size,checkable[i]->_y+size,checkable[i]->_z+size);
+                if(_x+this->size>=min.x()){
+                    
+                    
+                    if(_x-this->size<=max.x()){
+                        
+                        
+                        if(_y+this->size>=min.y()){
+                            
+                            if(_y-this->size<=max.y()){
+                                
+                                
+                                
+                                if(_z+this->size>=min.z()){
+                                    
+                                    
+                                    
+                                    if(_z-this->size<=max.z()){
+                                        return true;
+                                    }
+                                    
+                                    
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+            return false;
+    }
     
+            
+            
+            
+            
+            
+        };
 
-    
-    
-    
-};
-
+// this is not a good idea to use bounding sphere
 class Cube : public Model{
 public:
     Cube(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f){
@@ -275,9 +329,9 @@ public:
         _x=x;
         _y=y;
         _z=z;
-        _radius=size*sqrtf(2.0f);
+        _radius=size;
     }
-    float size;
+    
     
     void draw(int mode=0){
         glLoadIdentity();
@@ -297,7 +351,7 @@ public:
         _z=z;
         _radius=size;
     }
-    float size;
+   
     
     void draw(int mode=0){
         glLoadIdentity();

@@ -93,10 +93,10 @@ void init( void ) {
     cout << r2 << endl;
     x=-2.0f;
     
-    teapot=new Teapot(0.25f,0.0f,0.0f,-5.0f);
+    teapot=new Teapot(0.25f,-1.0f,0.0f,-5.0f);
     //teapot->setVelocity(Vec(0,0.5,0.5));
     teapot->setMass(1.0f);
-    teapot->addForce(Quaternion(0.01, 0, -1.5, 0,false)); // regular gravity
+    teapot->addForce(Quaternion(0.1, 0, -1.5, 0,false)); // regular gravity
     //teapot->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot->setVelocity(Vec(0.06,0,0));
     teapot->setAccByForce();
@@ -140,7 +140,7 @@ void init( void ) {
     world->addChild(*leftWall);
     world->addChild(*rightWall);
     world->addChild(*teapot);
-    //world->addChild(*teapot2);
+    world->addChild(*teapot2);
     //world->addChild(*teapot3);
     //world->addChild(*teapot4);
     
@@ -266,9 +266,9 @@ void HW3(){
     teapot->draw();
     
     
-    //teapot2->refresh(0.1f);
+    teapot2->refresh(0.1f);
     //cout << teapot->_y << endl;
-    //teapot2->draw();
+    teapot2->draw();
     
     //teapot3->refresh(0.1f);
     //cout << teapot->_y << endl;
