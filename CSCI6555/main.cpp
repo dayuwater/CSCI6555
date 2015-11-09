@@ -96,34 +96,37 @@ void init( void ) {
     teapot=new Teapot(0.25f,-1.0f,0.0f,-5.0f);
     //teapot->setVelocity(Vec(0,0.5,0.5));
     teapot->setMass(1.0f);
-    teapot->addForce(Quaternion(0.1, 0, -1.5, 0,false)); // regular gravity
+    teapot->addForce(Quaternion(0.1, 1, 0, 0,false)); // regular gravity
     //teapot->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
-    teapot->setVelocity(Vec(0.06,0,0));
+    teapot->setVelocity(Vec(0.06,0.06,0));
     teapot->setAccByForce();
     
     
-    teapot2=new Teapot(0.25f,0.0f,-0.0f,-5.0f);
+    teapot2=new Teapot(0.25f,1.0f,-0.0f,-5.0f);
     //teapot2->setVelocity(Vec(0,-0.5,0.5));
     teapot2->setMass(1.0f);
-    teapot2->addForce(Quaternion(0.1, 0, 1.5, 0,false)); // regular gravity
-    teapot2->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot2->addForce(Quaternion(-0.1, 1, 0, 0,false)); // regular gravity
+    //teapot2->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot2->setVelocity(Vec(-0.06,0.06,0));
     teapot2->setAccByForce();
     
     
-    teapot3=new Teapot(0.25f,0.0f,0.0f,-5.0f);
+    teapot3=new Teapot(0.25f,0.0f,1.0f,-5.0f);
     
     teapot3->setMass(1.0f);
     teapot3->setVelocity(Vec(0,0,0));
-    teapot3->addForce(Quaternion(0.1, 3, 0, 0,false)); // regular gravity
+    teapot3->addForce(Quaternion(-0.1, 0, 1, 0,false)); // regular gravity
     //teapot3->addForce(Quaternion(0.02, 10.5, 0, 0.5,false));
+    teapot3->setVelocity(Vec(0.06,-0.06,0));
     teapot3->setAccByForce();
     
-    teapot4=new Teapot(0.25f,-0.0f,0.0f,-5.0f);
+    teapot4=new Teapot(0.25f,-0.0f,-1.0f,-5.0f);
     
     teapot4->setMass(1.0f);
     //teapot4->setVelocity(Vec(0,-10,0));
-    teapot4->addForce(Quaternion(-0.1, 3, 0, 0,false)); // regular gravity
+    teapot4->addForce(Quaternion(0.1, 0, 1, 0,false)); // regular gravity
     //teapot4->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
+    teapot4->setVelocity(Vec(0.06,0.06,0));
     teapot4->setAccByForce();
     
     Floor=new Cube(3.0f,0.0f,-3.0f,-5.0f);
@@ -141,8 +144,8 @@ void init( void ) {
     world->addChild(*rightWall);
     world->addChild(*teapot);
     world->addChild(*teapot2);
-    //world->addChild(*teapot3);
-    //world->addChild(*teapot4);
+    world->addChild(*teapot3);
+    world->addChild(*teapot4);
     
     
 
@@ -270,14 +273,14 @@ void HW3(){
     //cout << teapot->_y << endl;
     teapot2->draw();
     
-    //teapot3->refresh(0.1f);
+    teapot3->refresh(0.1f);
     //cout << teapot->_y << endl;
-    //teapot3->draw();
+    teapot3->draw();
 
     
-    //teapot4->refresh(0.1f);
+    teapot4->refresh(0.1f);
     //cout << teapot->_y << endl;
-    //teapot4->draw();
+    teapot4->draw();
     
     Floor->draw();
     ceiling->draw();

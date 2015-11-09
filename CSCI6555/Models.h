@@ -192,9 +192,14 @@ public:
         setNewPosition(dt);
         if(checkCollide()){
             Vec newSpeed;
-            newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            newSpeed.set(_speed.x()*(rand()%6/3.0f),_speed.y()*(2-rand()%6/3.0f),_speed.z()*(rand()%6/3.0f)); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
             //_speed=newSpeed;
-            _speed=_speed*(-1.1f);
+           
+            _speed=_speed*(-1.0f);
+        
+            
+            setNewPosition(dt);
+        
         }
         /*else if(checkCollideCube()){
             Vec newSpeed;
@@ -329,7 +334,8 @@ public:
         _x=x;
         _y=y;
         _z=z;
-        _radius=size;
+       
+        _radius=size*sqrt(1.3);
     }
     
     
@@ -349,6 +355,9 @@ public:
         _x=x;
         _y=y;
         _z=z;
+        /*_rx=PI/2/(rand()%10);
+        _ry=PI/2/(rand()%10);
+        _rz=PI/2/(rand()%10);*/
         _radius=size;
     }
    
