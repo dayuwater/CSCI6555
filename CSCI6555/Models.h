@@ -199,7 +199,7 @@ public:
         setNewAngle(dt);
         if(checkCollide()){
             Vec newSpeed;
-            newSpeed.set(_speed.x()*(rand()%6/3.0f),_speed.y()*(2-rand()%6/3.0f),_speed.z()*(rand()%6/3.0f)); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
             //_speed=newSpeed;
            
             _speed=_speed*(-1.0f);
