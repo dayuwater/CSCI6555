@@ -67,7 +67,7 @@ bool keyInc=true; // see if the key is increasing
 // 1=HW1
 // 2=HW2
 // Going to use one project for all homeworks
-GLint mode=2;
+GLint mode=3;
 
 Teapot* teapot;
 Teapot* teapot2;
@@ -99,6 +99,7 @@ void init( void ) {
     teapot->addForce(Quaternion(0.1, 1, 0, 0,false)); // regular gravity
     //teapot->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot->setVelocity(Vec(0.06,0.06,0));
+    teapot->setSpin(0, PI/10, 0);
     teapot->setAccByForce();
     
     
@@ -108,6 +109,7 @@ void init( void ) {
     teapot2->addForce(Quaternion(-0.1, 1, 0, 0,false)); // regular gravity
     //teapot2->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot2->setVelocity(Vec(-0.06,0.06,0));
+    teapot2->setSpin(0, -PI/10, 0);
     teapot2->setAccByForce();
     
     
@@ -118,6 +120,7 @@ void init( void ) {
     teapot3->addForce(Quaternion(-0.1, 0, 1, 0,false)); // regular gravity
     //teapot3->addForce(Quaternion(0.02, 10.5, 0, 0.5,false));
     teapot3->setVelocity(Vec(0.06,-0.06,0));
+    teapot3->setSpin(0, PI/10, 0);
     teapot3->setAccByForce();
     
     teapot4=new Teapot(0.25f,-0.0f,-1.0f,-5.0f);
@@ -127,6 +130,7 @@ void init( void ) {
     teapot4->addForce(Quaternion(0.1, 0, 1, 0,false)); // regular gravity
     //teapot4->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot4->setVelocity(Vec(0.06,0.06,0));
+    teapot4->setSpin(0, -PI/10, 0);
     teapot4->setAccByForce();
     
     Floor=new Cube(3.0f,0.0f,-3.0f,-5.0f);

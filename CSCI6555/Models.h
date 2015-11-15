@@ -140,6 +140,12 @@ public:
         _acc=a;
     }
     
+    void setSpin(float x, float y, float z){
+        _omegax=x;
+        _omegay=y;
+        _omegaz=z;
+    }
+    
     // ------------------------------
     //  Part 2: Force System
     // ------------------------------
@@ -190,15 +196,21 @@ public:
     void refresh(float dt=1.0f){
         setNewVelocity(dt);
         setNewPosition(dt);
+        setNewAngle(dt);
         if(checkCollide()){
             Vec newSpeed;
             newSpeed.set(_speed.x()*(rand()%6/3.0f),_speed.y()*(2-rand()%6/3.0f),_speed.z()*(rand()%6/3.0f)); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
             //_speed=newSpeed;
            
             _speed=_speed*(-1.0f);
+            // a very simple approximation
+            _omegax=-_omegax;
+            _omegay=-_omegay;
+            _omegaz=-_omegaz;
         
             
             setNewPosition(dt);
+            setNewAngle(dt);
         
         }
         /*else if(checkCollideCube()){
@@ -221,6 +233,13 @@ public:
         _z=_z+_speed.z()*dt;
     }
     
+    void setNewAngle(float dt=1.0f){
+        _rx=_rx+_omegax*dt;
+        _ry=_ry+_omegay*dt;
+        _rz=_rz+_omegaz*dt;
+        
+    }
+    
    
     
     
@@ -236,6 +255,10 @@ public:
     float _rx;
     float _ry;
     float _rz;
+    // angular velocity
+    float _omegax;
+    float _omegay;
+    float _omegaz;
     // orientation using Quaternion
     float _qw;
     float _qa;
@@ -350,14 +373,14 @@ public:
 
 class Teapot : public Model{
 public:
-    Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f){
+    Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f,float ry=PI/2){
         size=sizee;
         _x=x;
         _y=y;
         _z=z;
-        /*_rx=PI/2/(rand()%10);
-        _ry=PI/2/(rand()%10);
-        _rz=PI/2/(rand()%10);*/
+        
+        _ry=ry;
+        
         _radius=size;
     }
    
