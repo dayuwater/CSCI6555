@@ -295,6 +295,11 @@ void HW3(){
     
 }
 
+void HW4(){
+    cout << "HW4" << endl;
+    
+}
+
 
 
 void render( void ) {
@@ -307,6 +312,9 @@ void render( void ) {
     }
     else if(mode==3){
         HW3();
+    }
+    else if(mode==4){
+        HW4();
     }
     
     glutSwapBuffers();
@@ -328,6 +336,9 @@ void keyboard( unsigned char key, int x, int y ) {
             break;
         case '3':
             mode=3;
+            break;
+        case '4':
+            mode=4;
             break;
     }
 }
