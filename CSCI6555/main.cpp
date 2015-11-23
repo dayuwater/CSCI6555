@@ -196,9 +196,9 @@ void init4(){
         float x=rand()%400*0.01-2.0f;
         float y=rand()%630*0.01-1.3f;
         float z=rand()%500*0.01-15.0f;
-        float vx=rand()%1000*0.001-0.5f;
-        float vy=rand()%1000*0.001-0.5f;
-        float vz=rand()%1000*0.001-0.5f;
+        float vx=rand()%1000*0.001-1.5f;
+        float vy=rand()%1000*0.001-1.5f;
+        float vz=rand()%1000*0.001-1.5f;
         
     
         teapots.push_back(new Teapot(0.25f,x,y,z));
@@ -381,7 +381,7 @@ void HW4(){
     LeftWall4->draw();
     RightWall4->draw();
     for(int i=0; i<teapots.size();i++){
-        teapots[i]->refresh(0.1f);
+        teapots[i]->refresh(0.1f,2);
         teapots[i]->draw();
     }
     

@@ -383,8 +383,9 @@ class IntelModel : public Model{
 public:
     
     
-    void refresh(float dt=1.0f){
+    void refresh(float dt=1.0f,int leader=-1){
         // behavioral animation
+        velocityMatching(leader);
         flockCentering();
         
         // physical animation
@@ -447,7 +448,38 @@ private:
         
         
     }
-    // velocity matching
+    // velocity matching , leader is the index of leading teapot, if
+    //leader=-1 the leader is randomly selected in each refresh
+    void velocityMatching(int leader=-1){
+        // get the center of other teapots
+        vector<Model*> check=parent[0]->getDecendents();
+        vector<Vec> checkableVelocity;
+        for(int i=0; i<check.size();i++){
+            // faked polymorphysm
+            if(check[i]->_type=="intel"&&this!=check[i]){
+                checkableVelocity.push_back(Vec(check[i]->getVelocity().x(),check[i]->getVelocity().y(),check[i]->getVelocity().z()));
+            }
+            
+            
+        }
+        Vec finalVelocity;
+        if(leader==-1){
+        
+            finalVelocity=checkableVelocity[rand()%checkableVelocity.size()];
+        }
+        else{
+            finalVelocity=checkableVelocity[leader];
+        }
+        
+        
+        
+        
+        // set new velocity
+        _speed=finalVelocity;
+
+    }
+    
+    
     // collison avoidance
     
 };
