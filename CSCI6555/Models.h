@@ -16,6 +16,7 @@
 #include <GLUT/GLUT.h>
 #include "Vector.h"
 #include "Util.h"
+
 #define PI 3.14159265358979
 
 
@@ -49,6 +50,8 @@ public:
         children.push_back(&m);
         m.parent.push_back(this);
     }
+    
+    
     // rotate about the parent
     void rotate(float angle){
         
@@ -267,6 +270,7 @@ public:
     
     
     float size;
+    string _type;
     
 protected:
     vector<Model*> parent;
@@ -274,12 +278,16 @@ protected:
     
     float _radius;
     
+    
     // physical properties
     float _mass;
     Vec _speed;
     Vec _acc; // acceleration
     vector<Quaternion> _forces; // since force consist of magitude of the force and the direction of force
     // it is best to be represented by a quaternion, in this case rotational rules does not apply
+    
+    
+    
     
     // collision detection using bounding sphere
     bool checkCollide(){
@@ -370,10 +378,84 @@ public:
     }
 };
 
-
-class Teapot : public Model{
+// normal intelligent model
+class IntelModel : public Model{
 public:
-    Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f,float ry=PI/2){
+    
+    
+    void refresh(float dt=1.0f){
+        // behavioral animation
+        flockCentering();
+        
+        // physical animation
+        setNewVelocity(dt);
+        setNewPosition(dt);
+        setNewAngle(dt);
+        if(checkCollide()){
+            Vec newSpeed;
+            newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            //_speed=newSpeed;
+            
+            _speed=_speed*(-1.0f);
+            // a very simple approximation
+            _omegax=-_omegax;
+            _omegay=-_omegay;
+            _omegaz=-_omegaz;
+            
+            
+            setNewPosition(dt);
+            setNewAngle(dt);
+            
+        }
+    }
+
+    
+    
+private:
+    
+    // flock centering
+    void flockCentering(){
+        // get the center of other teapots
+        vector<Model*> check=parent[0]->getDecendents();
+        vector<Vec> checkablePos;
+        for(int i=0; i<check.size();i++){
+            // faked polymorphysm
+            if(check[i]->_type=="intel"&&this!=check[i]){
+                checkablePos.push_back(Vec(check[i]->_x,check[i]->_y,check[i]->_z));
+            }
+            
+            
+        }
+        Vec center;
+        float totalX=0;
+        float totalY=0;
+        float totalZ=0;
+        for(int i=0; i<checkablePos.size();i++){
+            totalX+=checkablePos[i].x();
+            totalY+=checkablePos[i].y();
+            totalZ+=checkablePos[i].z();
+        }
+        center.set(totalX/checkablePos.size(),totalY/checkablePos.size(),totalZ/checkablePos.size());
+        
+        
+        // determine the velocity direction
+        Vec dir;
+        dir.set(-_x+center.x(),-_y+center.y(),-_z+center.z());
+       
+        // set new velocity
+        _speed=dir.normalize()*_speed.length();
+        
+        
+    }
+    // velocity matching
+    // collison avoidance
+    
+};
+
+
+class Teapot : public IntelModel{
+public:
+    Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f,float ry=0){
         size=sizee;
         _x=x;
         _y=y;
@@ -382,6 +464,7 @@ public:
         _ry=ry;
         
         _radius=size;
+        _type="intel";
     }
    
     

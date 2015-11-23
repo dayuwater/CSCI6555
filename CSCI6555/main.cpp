@@ -24,6 +24,7 @@
 #include "HW2.cpp"
 #include "Models.h"
 #include "Util.h"
+#include "Behavior.h"
 
 #define PI 3.14159265358979
 #define RESOURCE_DIR   "/Users/tanwang/Documents/CSCI6555/CSCI6555/resources/"
@@ -67,7 +68,9 @@ bool keyInc=true; // see if the key is increasing
 // 1=HW1
 // 2=HW2
 // Going to use one project for all homeworks
-GLint mode=3;
+GLint mode=4;
+
+// Models used for HW3
 
 Teapot* teapot;
 Teapot* teapot2;
@@ -81,17 +84,28 @@ Cube* rightWall;
 
 Model* world; // abstract model, just use for collision detection
 
+
+// Models used for HW4
+
+Cube* Floor4;
+Cube* Ceiling4;
+Cube* LeftWall4;
+Cube* RightWall4;
+
+
+vector<Teapot*> teapots;
+Model* world4;
+
+
+
+
 //================================
 // init
 //================================
-void init( void ) {
-    // init something before main loop...
-    TestClass tc;
-    int r1=tc.addition(1, 2);
-    int r2=tc.mult(2, 3);
-    cout << r1 << endl;
-    cout << r2 << endl;
-    x=-2.0f;
+
+
+void init3(){
+    
     
     teapot=new Teapot(0.25f,-1.0f,0.0f,-5.0f);
     //teapot->setVelocity(Vec(0,0.5,0.5));
@@ -153,6 +167,71 @@ void init( void ) {
     
     
 
+    
+}
+
+void init4(){
+    Floor4=new Cube(9.0f,0.0f,-9.0f,-15.0f);
+    Ceiling4=new Cube(9.0f,0.0f,9.0f,-15.0f);
+    LeftWall4=new Cube(9.0f,-9.0f,0.0f,-15.0f);
+    RightWall4=new Cube(9.0f,9.0f,0.0f,-15.0f);
+    // Magic Position: (0,-3.3,-15)
+    
+    /*
+    // x axis
+    for(int i=-3.0f; i<=3.0f; i++){
+        teapots.push_back(new Teapot(0.25f,i,-3.3f,-15.0f));
+    }
+    // y axis
+    for(int i=-3.3f; i<=5.0f; i++){
+        teapots.push_back(new Teapot(0.25f,0.0f,i,-15.0f));
+    }
+    // z axis
+    for(int i=-25.0f; i<=-5.0f; i++){
+        teapots.push_back(new Teapot(0.25f,0.0f,-3.3f,i));
+    }*/
+    
+    for(int i=0; i<20; i++){
+        
+        float x=rand()%400*0.01-2.0f;
+        float y=rand()%630*0.01-1.3f;
+        float z=rand()%500*0.01-15.0f;
+        float vx=rand()%1000*0.001-0.5f;
+        float vy=rand()%1000*0.001-0.5f;
+        float vz=rand()%1000*0.001-0.5f;
+        
+    
+        teapots.push_back(new Teapot(0.25f,x,y,z));
+        teapots[i]->setVelocity(Vec(vx,vy,0.0f));
+    }
+    
+    world4=new Model();
+    
+    world4->addChild(*Floor4);
+    world4->addChild(*Ceiling4);
+    world4->addChild(*LeftWall4);
+    world4->addChild(*RightWall4);
+    for(int i=0; i<teapots.size();i++){
+        world4->addChild(*teapots[i]);
+        
+    }
+    
+    
+}
+void init( void ) {
+    
+    srand(time(NULL));
+    // init something before main loop...
+    TestClass tc;
+    int r1=tc.addition(1, 2);
+    int r2=tc.mult(2, 3);
+    cout << r1 << endl;
+    cout << r2 << endl;
+    x=-2.0f;
+    
+    init3();
+    init4();
+    
 
 
     
@@ -296,7 +375,16 @@ void HW3(){
 }
 
 void HW4(){
-    cout << "HW4" << endl;
+    
+    Floor4->draw();
+    Ceiling4->draw();
+    LeftWall4->draw();
+    RightWall4->draw();
+    for(int i=0; i<teapots.size();i++){
+        teapots[i]->refresh(0.1f);
+        teapots[i]->draw();
+    }
+    
     
 }
 

@@ -37,6 +37,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B724CC8C1C0364AD00668E32 /* Behavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Behavior.h; sourceTree = "<group>"; };
 		B77322E11BAF637A00309BB7 /* Matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Matrix.h; sourceTree = "<group>"; };
 		B77322E21BB0AE1400309BB7 /* Splines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Splines.h; sourceTree = "<group>"; };
 		B77322E51BC70EBC00309BB7 /* HW1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HW1.cpp; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 				B77322E81BC9C6C800309BB7 /* Vector.h */,
 				B77322E91BC9C7F300309BB7 /* Util.h */,
 				B7E3AD991BE0315000346597 /* HW2.cpp */,
+				B724CC8C1C0364AD00668E32 /* Behavior.h */,
 			);
 			path = CSCI6555;
 			sourceTree = "<group>";
