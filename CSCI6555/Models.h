@@ -385,9 +385,7 @@ public:
     
     void refresh(float dt=1.0f,int leader=-1){
         // behavioral animation
-        velocityMatching(leader);
-        flockCentering();
-        
+        velocityArbitration(leader);
         // physical animation
         setNewVelocity(dt);
         setNewPosition(dt);
@@ -414,8 +412,8 @@ public:
     
 private:
     
-    // flock centering
-    void flockCentering(){
+    // get velocity for flock centering
+    Vec flockCenteringVelocity(float* factor){
         // get the center of other teapots
         vector<Model*> check=parent[0]->getDecendents();
         vector<Vec> checkablePos;
@@ -443,14 +441,16 @@ private:
         Vec dir;
         dir.set(-_x+center.x(),-_y+center.y(),-_z+center.z());
        
-        // set new velocity
-        _speed=dir.normalize()*_speed.length();
+        // set new velocity and factor of centering
+        // factor=distance-2 , 2 is the minumum distance
+        *factor=dir.length()-0.5;
+        return dir.normalize()*_speed.length();
         
         
     }
-    // velocity matching , leader is the index of leading teapot, if
+    // get velocity for velocity matching , leader is the index of leading teapot, if
     //leader=-1 the leader is randomly selected in each refresh
-    void velocityMatching(int leader=-1){
+    Vec velocityMatchingVelocity(int leader=-1){
         // get the center of other teapots
         vector<Model*> check=parent[0]->getDecendents();
         vector<Vec> checkableVelocity;
@@ -471,16 +471,30 @@ private:
             finalVelocity=checkableVelocity[leader];
         }
         
-        
+       
         
         
         // set new velocity
-        _speed=finalVelocity;
+        return finalVelocity;
 
     }
     
     
     // collison avoidance
+    
+    // arbitration for three velocities
+    void velocityArbitration(int leader=-1,float f1=0.0f, float f2=1.0f, float f3=2.0f,float f4=0.0f){
+        Vec previousSpeed=_speed;
+        float factor2=0;
+        
+        Vec flockCentering=flockCenteringVelocity(&factor2);
+        Vec velocityMatching=velocityMatchingVelocity(leader);
+        Vec collisonAvoid;
+        
+        
+        _speed=(previousSpeed*f1+flockCentering*factor2+velocityMatching*f3+collisonAvoid*f4).normalize();
+        
+    }
     
 };
 
