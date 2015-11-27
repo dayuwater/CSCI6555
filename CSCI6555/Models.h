@@ -14,6 +14,8 @@
 #include "Matrix.h"
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
+#include <random>
+#include <shared_mutex>
 #include "Vector.h"
 #include "Util.h"
 
@@ -270,13 +272,14 @@ public:
     
     
     float size;
+    float _radius;
     string _type;
     
 protected:
     vector<Model*> parent;
     vector<Model*> children;
     
-    float _radius;
+    
     
     
     // physical properties
@@ -366,7 +369,7 @@ public:
         _y=y;
         _z=z;
        
-        _radius=size*sqrt(1.3);
+        _radius=size*sqrt(2);
     }
     
     
@@ -443,7 +446,7 @@ private:
        
         // set new velocity and factor of centering
         // factor=distance-2 , 2 is the minumum distance
-        *factor=dir.length()-0.5;
+        *factor=dir.length()-1.5;
         return dir.normalize()*_speed.length();
         
         
@@ -479,6 +482,82 @@ private:
 
     }
     
+    Vec collisonAvoidance(float* factor){
+        Vec result;
+        float fac=0;
+        // get all real checkables
+        vector<Model*> check=parent[0]->getDecendents(); // fetch
+        vector<Model*> realCheckable; // 1st filter
+        vector<Model*> closeModels; // 2nd filter
+        vector<Model*> frontModels; // 3rd filter
+        vector<float> angles;
+        vector<float> distances;
+        for(int i=0; i<check.size();i++){
+            if(this!=check[i]){
+                realCheckable.push_back(check[i]);
+            }
+        }
+        
+        // calculate the distance for all of them
+        // check if they are closer than 1.5
+        for(int i=0; i<realCheckable.size();i++){
+            Vec centerA;
+            centerA.set(realCheckable[i]->_x,realCheckable[i]->_y,realCheckable[i]->_z);
+            Vec centerB;
+            centerB.set(this->_x,this->_y,this->_z);
+            if(centerA.distance(centerB)<realCheckable[i]->_radius+this->_radius+1.5){
+                closeModels.push_back(realCheckable[i]);
+            }
+        }
+        // find all models that appear at the front (-90 degree to 90 degree)
+        for(int i=0; i<closeModels.size();i++){
+            
+            Vec B(getVelocity());
+            Vec centerA;
+            centerA.set(closeModels[i]->_x,closeModels[i]->_y,closeModels[i]->_z);
+            Vec centerB;
+            centerB.set(this->_x,this->_y,this->_z);
+            Vec A(centerA-centerB);
+            // a.b=ab(cos theta)
+            float theta=0;
+            float k=(A.dot(B))/(A.length()*B.length());
+            theta=acosf(k);
+            
+            if(theta<PI/2){
+                frontModels.push_back(closeModels[i]);
+                angles.push_back(theta);
+                distances.push_back(centerA.distance(centerB)-closeModels[i]->_radius-this->_radius);
+                
+            }
+            
+            
+            
+            
+            
+        }
+        
+
+        // turn to the closest safe angle
+        sort(angles.begin(),angles.end());
+        float maxAngle=0;
+        if(!angles.empty()){
+           maxAngle=angles[angles.size()-1];
+        }
+        // always stear right for now (x and y coordinates)
+        result.set(getVelocity().x()*cos(maxAngle)-getVelocity().y()*sin(maxAngle),
+                   getVelocity().x()*sin(maxAngle)+getVelocity().y()*cos(maxAngle),getVelocity().z());
+        
+        
+        sort(distances.begin(),distances.end());
+        if(!distances.empty()){
+            *factor=1.5/((distances[0])*(distances[0])); // proportional to 1/(r^2)
+        }
+        else{
+            *factor=0;
+        }
+        return result;
+    }
+    
     
     // collison avoidance
     
@@ -486,13 +565,13 @@ private:
     void velocityArbitration(int leader=-1,float f1=0.0f, float f2=1.0f, float f3=2.0f,float f4=0.0f){
         Vec previousSpeed=_speed;
         float factor2=0;
-        
+        float factor4=0;
         Vec flockCentering=flockCenteringVelocity(&factor2);
         Vec velocityMatching=velocityMatchingVelocity(leader);
-        Vec collisonAvoid;
+        Vec collisonAvoid=collisonAvoidance(&factor4);
         
         
-        _speed=(previousSpeed*f1+flockCentering*factor2+velocityMatching*f3+collisonAvoid*f4).normalize();
+        _speed=(previousSpeed*f1+flockCentering*factor2+velocityMatching*f3+collisonAvoid*factor4).normalize()*0.5;
         
     }
     

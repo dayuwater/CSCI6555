@@ -191,10 +191,10 @@ void init4(){
         teapots.push_back(new Teapot(0.25f,0.0f,-3.3f,i));
     }*/
     
-    for(int i=0; i<20; i++){
+    for(int i=0; i<5; i++){
         
         float x=rand()%400*0.01-2.0f;
-        float y=rand()%630*0.01-1.3f;
+        float y=rand()%430*0.01-1.3f;
         float z=rand()%500*0.01-15.0f;
         float vx=rand()%1000*0.001-1.5f;
         float vy=rand()%1000*0.001-1.5f;
