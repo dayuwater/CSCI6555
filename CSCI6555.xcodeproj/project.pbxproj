@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B724CC8E1C1123D200668E32 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B724CC8D1C1123D200668E32 /* OpenAL.framework */; };
 		B7E1A5201B99172D00AC0E89 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B7E1A51F1B99172D00AC0E89 /* main.cpp */; };
 		B7E1A5291B9917DC00AC0E89 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E1A5281B9917DC00AC0E89 /* GLUT.framework */; };
 		B7E1A52B1B9917E700AC0E89 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7E1A52A1B9917E700AC0E89 /* OpenGL.framework */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		B724CC8C1C0364AD00668E32 /* Behavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Behavior.h; sourceTree = "<group>"; };
+		B724CC8D1C1123D200668E32 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		B77322E11BAF637A00309BB7 /* Matrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = Matrix.h; sourceTree = "<group>"; };
 		B77322E21BB0AE1400309BB7 /* Splines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Splines.h; sourceTree = "<group>"; };
 		B77322E51BC70EBC00309BB7 /* HW1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HW1.cpp; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B724CC8E1C1123D200668E32 /* OpenAL.framework in Frameworks */,
 				B7E1A52D1B99187D00AC0E89 /* GLKit.framework in Frameworks */,
 				B7E1A52B1B9917E700AC0E89 /* OpenGL.framework in Frameworks */,
 				B7E1A5291B9917DC00AC0E89 /* GLUT.framework in Frameworks */,
@@ -83,6 +86,7 @@
 		B7E1A5131B99172D00AC0E89 = {
 			isa = PBXGroup;
 			children = (
+				B724CC8D1C1123D200668E32 /* OpenAL.framework */,
 				B77322EA1BC9CB3E00309BB7 /* resources */,
 				B7E1A52E1B991BF800AC0E89 /* gtest.framework */,
 				B7E1A52C1B99187D00AC0E89 /* GLKit.framework */,

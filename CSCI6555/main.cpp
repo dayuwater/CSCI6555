@@ -13,6 +13,7 @@
 #include <fstream>
 #include <OpenGL/OpenGL.h>
 #include <GLUT/GLUT.h>
+#include <OpenAL/OpenAL.h>
 #include "Matrix.h"
 #include "TestClass.h"
 #include "Quaternion.h"
@@ -82,6 +83,7 @@ Cube* ceiling;
 Cube* leftWall;
 Cube* rightWall;
 
+
 Model* world; // abstract model, just use for collision detection
 
 
@@ -91,6 +93,8 @@ Cube* Floor4;
 Cube* Ceiling4;
 Cube* LeftWall4;
 Cube* RightWall4;
+Cube* BackWall4;
+Cube* FrontWall4;
 
 
 vector<Teapot*> teapots;
@@ -105,6 +109,7 @@ Model* world4;
 
 
 void init3(){
+    
     
     
     teapot=new Teapot(0.25f,-1.0f,0.0f,-5.0f);
@@ -175,6 +180,9 @@ void init4(){
     Ceiling4=new Cube(9.0f,0.0f,9.0f,-15.0f);
     LeftWall4=new Cube(9.0f,-9.0f,0.0f,-15.0f);
     RightWall4=new Cube(9.0f,9.0f,0.0f,-15.0f);
+    BackWall4=new Cube(9.0f,0.0f,0.0f,-24.0f);
+    FrontWall4=new Cube(9.0f,0.0f,0.0f,-0.0f);
+
     // Magic Position: (0,-3.3,-15)
     
     /*
@@ -191,11 +199,11 @@ void init4(){
         teapots.push_back(new Teapot(0.25f,0.0f,-3.3f,i));
     }*/
     
-    for(int i=0; i<5; i++){
+    for(int i=0; i<10; i++){
         
         float x=rand()%400*0.01-2.0f;
         float y=rand()%430*0.01-1.3f;
-        float z=rand()%500*0.01-15.0f;
+        float z=rand()%100*0.01-13.0f;
         float vx=rand()%1000*0.001-1.5f;
         float vy=rand()%1000*0.001-1.5f;
         float vz=rand()%1000*0.001-1.5f;
@@ -211,6 +219,8 @@ void init4(){
     world4->addChild(*Ceiling4);
     world4->addChild(*LeftWall4);
     world4->addChild(*RightWall4);
+    world4->addChild(*BackWall4);
+    world4->addChild(*FrontWall4);
     for(int i=0; i<teapots.size();i++){
         world4->addChild(*teapots[i]);
         
@@ -380,6 +390,7 @@ void HW4(){
     Ceiling4->draw();
     LeftWall4->draw();
     RightWall4->draw();
+    BackWall4->draw();
     for(int i=0; i<teapots.size();i++){
         teapots[i]->refresh(0.1f,2);
         teapots[i]->draw();
