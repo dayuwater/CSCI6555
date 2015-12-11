@@ -381,6 +381,49 @@ public:
     }
 };
 
+// just to represent human in my project, the actual model is just a cone
+class Human: public Model{
+public:
+    // constructor
+    Human(float x=0.0f,float y=0.0f,float z=-5.0f){
+        _x=x;
+        _y=y;
+        _z=z;
+        
+        
+        
+
+    }
+    
+    // factory methods for different kinds of human
+    static Human* createMale1(float x, float y,float z){
+        Human* m=new Human(x,y,z);
+        m->size=1.0f;
+        m->_radius=0.5f;
+        m->_sex="male";
+        m->_type="B";
+        return m;
+        
+        
+    }
+    
+    // draw function
+    void draw(int mode=0){
+        glLoadIdentity();
+        glTranslatef(_x, _y, _z);
+        glRotatef(PI/2, 1, 0, 0);
+        glScalef(size, size, size);
+        
+        glutSolidCone(0.125, 3, 20, 20);
+    }
+protected:
+    string _sex;
+    string _type;
+    
+    
+
+};
+
 // normal intelligent model
 class IntelModel : public Model{
 public:

@@ -69,7 +69,7 @@ bool keyInc=true; // see if the key is increasing
 // 1=HW1
 // 2=HW2
 // Going to use one project for all homeworks
-GLint mode=4;
+GLint mode=5;
 
 // Models used for HW3
 
@@ -87,7 +87,7 @@ Cube* rightWall;
 Model* world; // abstract model, just use for collision detection
 
 
-// Models used for HW4
+// Models used for HW4 and HW5
 
 Cube* Floor4;
 Cube* Ceiling4;
@@ -228,6 +228,32 @@ void init4(){
     
     
 }
+
+void init5(){
+    Floor4=new Cube(9.0f,0.0f,-9.0f,-15.0f);
+    Ceiling4=new Cube(9.0f,0.0f,9.0f,-15.0f);
+    LeftWall4=new Cube(9.0f,-9.0f,0.0f,-15.0f);
+    RightWall4=new Cube(9.0f,9.0f,0.0f,-15.0f);
+    BackWall4=new Cube(9.0f,0.0f,0.0f,-24.0f);
+    FrontWall4=new Cube(9.0f,0.0f,0.0f,-0.0f);
+    
+    
+    
+    
+    world4=new Model();
+    
+    world4->addChild(*Floor4);
+    world4->addChild(*Ceiling4);
+    world4->addChild(*LeftWall4);
+    world4->addChild(*RightWall4);
+    world4->addChild(*BackWall4);
+    world4->addChild(*FrontWall4);
+
+    
+    
+
+    
+}
 void init( void ) {
     
     srand(time(NULL));
@@ -240,7 +266,8 @@ void init( void ) {
     x=-2.0f;
     
     init3();
-    init4();
+    //init4();
+    init5();
     
 
 
@@ -379,7 +406,10 @@ void HW3(){
     ceiling->draw();
     leftWall->draw();
     rightWall->draw();
-
+    
+    
+    
+   
     
     
 }
@@ -399,6 +429,29 @@ void HW4(){
     
 }
 
+void HW5(){
+    Floor4->draw();
+    Ceiling4->draw();
+    LeftWall4->draw();
+    RightWall4->draw();
+    BackWall4->draw();
+    
+    glLoadIdentity();
+    glTranslatef(0, 0, -10);
+    glRotatef(PI/2, 1, 0, 0);
+    glScalef(1, 1, 1);
+    
+    glutSolidCone(0.125, 3, 20, 20);
+    
+    glLoadIdentity();
+    glTranslatef(0, 0.5, -10);
+    glRotatef(PI/2, 1, 0, 0);
+    glScalef(2, 2, 2);
+    
+    glutSolidCone(0.125, 3, 20, 20);
+    
+    
+}
 
 
 void render( void ) {
@@ -414,6 +467,9 @@ void render( void ) {
     }
     else if(mode==4){
         HW4();
+    }
+    else if(mode==5){
+        HW5();
     }
     
     glutSwapBuffers();
@@ -438,6 +494,9 @@ void keyboard( unsigned char key, int x, int y ) {
             break;
         case '4':
             mode=4;
+            break;
+        case '5':
+            mode=5;
             break;
     }
 }
