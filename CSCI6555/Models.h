@@ -206,23 +206,23 @@ public:
             Vec newSpeed;
             newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
             //_speed=newSpeed;
-           
+            
             _speed=_speed*(-1.0f);
             // a very simple approximation
             _omegax=-_omegax;
             _omegay=-_omegay;
             _omegaz=-_omegaz;
-        
+            
             
             setNewPosition(dt);
             setNewAngle(dt);
-        
+            
         }
         /*else if(checkCollideCube()){
-            Vec newSpeed;
-            newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
-            _speed=newSpeed;
-        }*/
+         Vec newSpeed;
+         newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+         _speed=newSpeed;
+         }*/
     }
     
     // "integrate" acceleration to get velocity
@@ -245,10 +245,10 @@ public:
         
     }
     
-   
     
     
-
+    
+    
     
     
     
@@ -274,7 +274,7 @@ public:
     float size;
     float _radius;
     string _type;
-    
+    string _sex;
 protected:
     vector<Model*> parent;
     vector<Model*> children;
@@ -350,15 +350,15 @@ protected:
                 
             }
         }
-            return false;
+        return false;
     }
     
-            
-            
-            
-            
-            
-        };
+    
+    
+    
+    
+    
+};
 
 // this is not a good idea to use bounding sphere
 class Cube : public Model{
@@ -368,7 +368,7 @@ public:
         _x=x;
         _y=y;
         _z=z;
-       
+        
         _radius=size*sqrt(2);
     }
     
@@ -389,21 +389,22 @@ public:
         _x=x;
         _y=y;
         _z=z;
+        setVelocity(Vec(-10+rand()%20,-10+rand()%20,-10+rand()%20)/120);
         
         
         
-
+        
     }
     
     // factory methods for different kinds of human
     static Human* createMale1(float x, float y,float z){
         Human* m=new Human(x,y,z);
-        m->setVelocity(Vec(0.1f,0,0));
+        //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
         m->_radius=0.5f;
         m->_sex="male";
-        m->_type="B";
+        m->_type="HB";
         return m;
         
         
@@ -411,40 +412,80 @@ public:
     
     static Human* createMale2(float x, float y,float z){
         Human* m=new Human(x,y,z);
-        m->setVelocity(Vec(0.1f,0,0));
+        //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
         m->_radius=0.5f;
         m->_sex="male";
-        m->_type="A";
+        m->_type="HA";
         return m;
         
         
     }
-
+    
     
     static Human* createFemale1(float x, float y, float z){
         Human* m=new Human(x,y,z);
-        m->setVelocity(Vec(0.1f,0,0));
+        //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
         m->_radius=0.5f;
         m->_sex="female";
-        m->_type="B";
+        m->_type="HB";
         return m;
     }
     
     static Human* createFemale2(float x, float y, float z){
         Human* m=new Human(x,y,z);
-        m->setVelocity(Vec(0.1f,0,0));
+        //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
         m->_radius=0.5f;
         m->_sex="female";
-        m->_type="A";
+        m->_type="HA";
         return m;
     }
-
+    
+    
+    
+    
+    // refresh  function, if return =0 nothing happens
+    // return from 1 to 3, there is a reproduction going on
+    // 1, A-> A 2, A->B 3, B->B
+    
+    int refresh(float dt=1.0f){
+        
+        //assert(status!=3);
+        setNewVelocity(dt);
+        setNewPosition(dt);
+        setNewAngle(dt);
+        int status=checkReproduce();
+        
+        if(status>=0){
+            Vec newSpeed;
+            newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            //_speed=newSpeed;
+            
+            _speed=_speed*(-1.0f);
+            // a very simple approximation
+            _omegax=-_omegax;
+            _omegay=-_omegay;
+            _omegaz=-_omegaz;
+            
+            
+            setNewPosition(dt);
+            setNewAngle(dt);
+            //status=checkReproduce();
+            
+            
+        }
+        /*else if(checkCollideCube()){
+         Vec newSpeed;
+         newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+         _speed=newSpeed;
+         }*/
+        return status;
+    }
     
     // draw function
     void draw(int mode=0){
@@ -459,17 +500,69 @@ public:
         }
         glScalef(size, size, size);
         
-        
-        glutSolidCone(0.125, 1, 20, 20);
-        //glutSolidTeapot(0.125);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        if(_type=="HA"){
+            glutSolidCone(0.125, 1, 20, 20);
+        }
+        else{
+            glutSolidTeapot(0.125);
+        }
     }
+    
+    
 protected:
-    string _sex;
-    string _type;
+    
+    // behaviors
+    // reproduction, also use to check collision
+    // if return is not negative, there is a collision
+    int checkReproduce(){
+        vector<Model*> checkable=parent[0]->getDecendents();
+        for(int i=0; i<checkable.size();i++){
+            if(checkable[i]!=this){
+                Vec FOI=Vec(checkable[i]->_x,checkable[i]->_y,checkable[i]->_z);
+                Vec here=Vec(_x,_y,_z);
+                Vec distance=here-FOI;
+                float dis=distance.length();
+                // if distance of the center is less than the sum of radius, there must be intersection
+                if(dis<_radius+checkable[i]->_radius/2){
+                    // if they are both human
+                    if((_type=="HA"||_type=="HB")&&(checkable[i]->_type=="HA"||checkable[i]->_type=="HB")){
+                        // if they have different sex
+                        if(_sex!=checkable[i]->_sex){
+                            if(_type=="HA"&&checkable[i]->_type=="HA"){
+                                return 1;
+                            }
+                            else if(_type=="HB"&&checkable[i]->_type=="HB"){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                        }
+                    }
+                    else{
+                        return 0;
+                    }
+                    
+                    
+                }
+            }
+        }
+        return -1;
+        
+    }
     
     
     
-
+    
+    
+    
+    
+    
+    
+    
+    
+    
 };
 
 // normal intelligent model
@@ -501,7 +594,7 @@ public:
             
         }
     }
-
+    
     
     
 private:
@@ -534,7 +627,7 @@ private:
         // determine the velocity direction
         Vec dir;
         dir.set(-_x+center.x(),-_y+center.y(),-_z+center.z());
-       
+        
         // set new velocity and factor of centering
         // factor=distance-2 , 2 is the minumum distance
         *factor=dir.length()-1.5;
@@ -558,19 +651,19 @@ private:
         }
         Vec finalVelocity;
         if(leader==-1){
-        
+            
             finalVelocity=checkableVelocity[rand()%checkableVelocity.size()];
         }
         else{
             finalVelocity=checkableVelocity[leader];
         }
         
-       
+        
         
         
         // set new velocity
         return finalVelocity;
-
+        
     }
     
     Vec collisonAvoidance(float* factor){
@@ -627,12 +720,12 @@ private:
             
         }
         
-
+        
         // turn to the closest safe angle
         sort(angles.begin(),angles.end());
         float maxAngle=0;
         if(!angles.empty()){
-           maxAngle=angles[angles.size()-1];
+            maxAngle=angles[angles.size()-1];
         }
         // always stear right for now (x and y coordinates)
         result.set(getVelocity().x()*cos(maxAngle)-getVelocity().y()*sin(maxAngle),
@@ -682,7 +775,7 @@ public:
         _radius=size;
         _type="intel";
     }
-   
+    
     
     void draw(int mode=0){
         glLoadIdentity();
@@ -770,7 +863,7 @@ public:
             polys[j]=poly;
         }
         
-                
+        
         setNormals();
         setCenter();
         setVertexNormals();
@@ -785,9 +878,9 @@ public:
         Quaternion q=Quaternion::fixedAngle(x, y, z);
         
         //float r[16]={1,0,0,0,0,cosf(angle),-sinf(angle),0,0,sinf(angle),cosf(angle),0,0,0,0,1};
-       
+        
         rotate(q,h);
-
+        
         
         
         
@@ -829,18 +922,18 @@ public:
             }
         }
         
-
+        
         
     }
     
     
     // Rotate To the parent
     void rotate2(float angle){
-       
+        
         translate(-attach.x(), -attach.y(), -attach.z());
         rotate(angle);
         translate(parentAttach.x(), parentAttach.y(), parentAttach.z());
-
+        
     }
     // Rotate to the center of model
     void selfRotate(float x,float y,float z,bool h=false){
@@ -858,11 +951,11 @@ public:
                 d[j]->translate(-distance.x(), -distance.y(), -distance.z());
                 d[j]->rotate(q,false);
                 d[j]->translate(distance.x(), distance.y(), distance.z());
-
+                
             }
- 
+            
         }
-       
+        
         
     }
     
@@ -899,7 +992,7 @@ public:
                 d[j]->draw(0,false);
             }
         }
-
+        
     }
     void scale(float f){
         for(int i=0; i<verts.size();i++){
@@ -939,8 +1032,8 @@ public:
         minVert.change(center.x(),center.y(),center.z());
         
         center=(maxVert+minVert)/2;
-
-
+        
+        
     }
     
     void translate(float x,float y,float z,bool h=true){
@@ -961,7 +1054,7 @@ public:
             }
         }
         
-
+        
     }
     
     // Translate the object to x, y, z away from the parent
@@ -1113,7 +1206,7 @@ public:
         PolyChildren.push_back(&m);
         m.PolyParent.push_back(this);
     }
-
+    
     
     PolyModel* getPolyParent(){
         return PolyParent[0];
@@ -1143,7 +1236,7 @@ public:
         return result;
     }
     
-
+    
     float getHeight(){
         return maxVert.y()-minVert.y();
     }
@@ -1166,7 +1259,7 @@ protected:
     Vec center;
     vector<PolyModel*> PolyParent;
     vector<PolyModel*> PolyChildren;
-
+    
     
 };
 

@@ -107,6 +107,8 @@ Human* m2;
 Human* f1;
 Human* f2;
 
+vector<Human*> humans;
+
 
 
 
@@ -178,7 +180,7 @@ void init3(){
     world->addChild(*teapot4);
     
     
-
+    
     
 }
 
@@ -189,22 +191,22 @@ void init4(){
     RightWall4=new Cube(9.0f,9.0f,0.0f,-15.0f);
     BackWall4=new Cube(9.0f,0.0f,0.0f,-24.0f);
     FrontWall4=new Cube(9.0f,0.0f,0.0f,-0.0f);
-
+    
     // Magic Position: (0,-3.3,-15)
     
     /*
-    // x axis
-    for(int i=-3.0f; i<=3.0f; i++){
-        teapots.push_back(new Teapot(0.25f,i,-3.3f,-15.0f));
-    }
-    // y axis
-    for(int i=-3.3f; i<=5.0f; i++){
-        teapots.push_back(new Teapot(0.25f,0.0f,i,-15.0f));
-    }
-    // z axis
-    for(int i=-25.0f; i<=-5.0f; i++){
-        teapots.push_back(new Teapot(0.25f,0.0f,-3.3f,i));
-    }*/
+     // x axis
+     for(int i=-3.0f; i<=3.0f; i++){
+     teapots.push_back(new Teapot(0.25f,i,-3.3f,-15.0f));
+     }
+     // y axis
+     for(int i=-3.3f; i<=5.0f; i++){
+     teapots.push_back(new Teapot(0.25f,0.0f,i,-15.0f));
+     }
+     // z axis
+     for(int i=-25.0f; i<=-5.0f; i++){
+     teapots.push_back(new Teapot(0.25f,0.0f,-3.3f,i));
+     }*/
     
     for(int i=0; i<10; i++){
         
@@ -215,7 +217,7 @@ void init4(){
         float vy=rand()%1000*0.001-1.5f;
         float vz=rand()%1000*0.001-1.5f;
         
-    
+        
         teapots.push_back(new Teapot(0.25f,x,y,z));
         teapots[i]->setVelocity(Vec(vx,vy,0.0f));
     }
@@ -244,8 +246,8 @@ void init5(){
     BackWall4=new Cube(9.0f,0.0f,0.0f,-24.0f);
     FrontWall4=new Cube(9.0f,0.0f,0.0f,-0.0f);
     
-   
-
+    
+    
     
     
     
@@ -271,14 +273,19 @@ void init5(){
     
     f2=Human::createFemale2(1.5, 1.5, -10);
     world4->addChild(*f2);
-
+    
+    humans.push_back(m1);
+    humans.push_back(m2);
+    humans.push_back(f1);
+    humans.push_back(f2);
     
     
-
-
     
     
-
+    
+    
+    
+    
     
 }
 void init( void ) {
@@ -296,8 +303,8 @@ void init( void ) {
     //init4();
     init5();
     
-
-
+    
+    
     
 }
 
@@ -375,6 +382,7 @@ void renderReady(){
     // enable lighting
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR);
     
     // light source attributes
     GLfloat LightAmbient[]	= { 0.4f, 0.4f, 0.4f, 1.0f };
@@ -404,7 +412,7 @@ void renderReady(){
     glMatrixMode( GL_MODELVIEW );
     
     
-
+    
     
 }
 
@@ -423,7 +431,7 @@ void HW3(){
     teapot3->refresh(0.1f);
     //cout << teapot->_y << endl;
     teapot3->draw();
-
+    
     
     teapot4->refresh(0.1f);
     //cout << teapot->_y << endl;
@@ -436,7 +444,7 @@ void HW3(){
     
     
     
-   
+    
     
     
 }
@@ -465,19 +473,52 @@ void HW5(){
     
     
     
-   
-    m1->refresh(0.5f);
-    m1->draw();
     
-    m2->refresh(0.5f);
-    m2->draw();
-    
-    f1->refresh(0.5f);
-    f1->draw();
-    
-    f2->refresh(0.5f);
-    f2->draw();
-    
+    for(int i=0; i<humans.size();i++){
+        int s=humans[i]->refresh(0.5f);
+        humans[i]->draw();
+        //assert(s!=1);
+        // if type A and type A reproduce, 25% chance will mutate to type B
+        if(humans.size()<=60&&s>0){ // the maximum population is 60
+            
+            if(rand()%4<s){
+                if(rand()%2==0){
+                    Human *h=Human::createMale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    humans.push_back(h);
+                    world4->addChild(*h);
+                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                else{
+                    Human *h=Human::createFemale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    
+                    humans.push_back(h);
+                    world4->addChild(*h);
+                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                
+            }
+            else {
+                if(rand()%2==0){
+                    Human *h=Human::createMale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    humans.push_back(h);
+                    world4->addChild(*h);
+                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                else{
+                    Human *h=Human::createFemale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    
+                    humans.push_back(h);
+                    world4->addChild(*h);
+                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                
+                
+            }
+            
+        }
+        
+        
+    }
     
     
     
@@ -487,7 +528,7 @@ void HW5(){
     glScalef(0.125, 0.125, 0.125);
     
     glutSolidDodecahedron();
-
+    
     
     
 }
