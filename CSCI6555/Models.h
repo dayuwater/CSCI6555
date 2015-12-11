@@ -398,6 +398,8 @@ public:
     // factory methods for different kinds of human
     static Human* createMale1(float x, float y,float z){
         Human* m=new Human(x,y,z);
+        m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
         m->_radius=0.5f;
         m->_sex="male";
@@ -407,18 +409,64 @@ public:
         
     }
     
+    static Human* createMale2(float x, float y,float z){
+        Human* m=new Human(x,y,z);
+        m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=2.0f;
+        m->_radius=0.5f;
+        m->_sex="male";
+        m->_type="A";
+        return m;
+        
+        
+    }
+
+    
+    static Human* createFemale1(float x, float y, float z){
+        Human* m=new Human(x,y,z);
+        m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=1.0f;
+        m->_radius=0.5f;
+        m->_sex="female";
+        m->_type="B";
+        return m;
+    }
+    
+    static Human* createFemale2(float x, float y, float z){
+        Human* m=new Human(x,y,z);
+        m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=2.0f;
+        m->_radius=0.5f;
+        m->_sex="female";
+        m->_type="A";
+        return m;
+    }
+
+    
     // draw function
     void draw(int mode=0){
         glLoadIdentity();
+        
         glTranslatef(_x, _y, _z);
-        glRotatef(PI/2, 1, 0, 0);
+        if(_sex=="female"){
+            glRotatef(180, 1, 0, 0);
+        }
+        if(_sex=="male"){
+            glRotatef(0, 1, 0, 0);
+        }
         glScalef(size, size, size);
         
-        glutSolidCone(0.125, 3, 20, 20);
+        
+        glutSolidCone(0.125, 1, 20, 20);
+        //glutSolidTeapot(0.125);
     }
 protected:
     string _sex;
     string _type;
+    
     
     
 

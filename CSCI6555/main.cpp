@@ -100,6 +100,13 @@ Cube* FrontWall4;
 vector<Teapot*> teapots;
 Model* world4;
 
+// models for HW5
+
+Human* m1;
+Human* m2;
+Human* f1;
+Human* f2;
+
 
 
 
@@ -237,6 +244,9 @@ void init5(){
     BackWall4=new Cube(9.0f,0.0f,0.0f,-24.0f);
     FrontWall4=new Cube(9.0f,0.0f,0.0f,-0.0f);
     
+   
+
+    
     
     
     
@@ -248,6 +258,23 @@ void init5(){
     world4->addChild(*RightWall4);
     world4->addChild(*BackWall4);
     world4->addChild(*FrontWall4);
+    
+    m1=Human::createMale1(0, 0, -10);
+    world4->addChild(*m1);
+    
+    m2=Human::createMale2(0, 1.5, -10);
+    world4->addChild(*m2);
+    
+    f1=Human::createFemale1(1.5, 0, -10);
+    world4->addChild(*f1);
+    
+    
+    f2=Human::createFemale2(1.5, 1.5, -10);
+    world4->addChild(*f2);
+
+    
+    
+
 
     
     
@@ -436,19 +463,31 @@ void HW5(){
     RightWall4->draw();
     BackWall4->draw();
     
+    
+    
+   
+    m1->refresh(0.5f);
+    m1->draw();
+    
+    m2->refresh(0.5f);
+    m2->draw();
+    
+    f1->refresh(0.5f);
+    f1->draw();
+    
+    f2->refresh(0.5f);
+    f2->draw();
+    
+    
+    
+    
     glLoadIdentity();
-    glTranslatef(0, 0, -10);
+    glTranslatef(1, 0.5, -10);
     glRotatef(PI/2, 1, 0, 0);
-    glScalef(1, 1, 1);
+    glScalef(0.125, 0.125, 0.125);
     
-    glutSolidCone(0.125, 3, 20, 20);
-    
-    glLoadIdentity();
-    glTranslatef(0, 0.5, -10);
-    glRotatef(PI/2, 1, 0, 0);
-    glScalef(2, 2, 2);
-    
-    glutSolidCone(0.125, 3, 20, 20);
+    glutSolidDodecahedron();
+
     
     
 }
