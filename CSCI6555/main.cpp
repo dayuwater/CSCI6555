@@ -102,12 +102,10 @@ Model* world4;
 
 // models for HW5
 
-Human* m1;
-Human* m2;
-Human* f1;
-Human* f2;
+
 
 vector<Human*> humans;
+vector<Zombie*> zombies;
 
 
 
@@ -253,24 +251,38 @@ void init5(){
     
     
     world4=new Model();
+    for(int i=0; i<10; i++){
+        Human *a;
+        if(i%2==0){
+            a=Human::createMale1(Util::randomPosition().x(), Util::randomPosition().y(),Util::randomPosition().z() );
+            world4->addChild(*a);
+            humans.push_back(a);
+        }
+        else{
+            a=Human::createFemale1(Util::randomPosition().x(), Util::randomPosition().y(),Util::randomPosition().z() );
+            world4->addChild(*a);
+            humans.push_back(a);
+
+            
+        }
+    }
     
-    m1=Human::createMale1(0, 0, -8);
-    world4->addChild(*m1);
-    
-    m2=Human::createMale2(0, 1.5, -8);
-    world4->addChild(*m2);
-    
-    f1=Human::createFemale1(1.5, 0, -8);
-    world4->addChild(*f1);
-    
-    
-    f2=Human::createFemale2(1.5, 1.5, -8);
-    world4->addChild(*f2);
-    
-    humans.push_back(m1);
-    humans.push_back(m2);
-    humans.push_back(f1);
-    humans.push_back(f2);
+    for(int i=0; i<10; i++){
+        Zombie *a;
+        if(i%2==0){
+            a=Zombie::createMale1(Util::randomPosition().x(), Util::randomPosition().y(),Util::randomPosition().z() );
+            world4->addChild(*a);
+            zombies.push_back(a);
+        }
+        else{
+            a=Zombie::createFemale1(Util::randomPosition().x(), Util::randomPosition().y(),Util::randomPosition().z() );
+            world4->addChild(*a);
+            zombies.push_back(a);
+            
+            
+        }
+    }
+
     
     
     
@@ -472,21 +484,21 @@ void HW5(){
         humans[i]->draw();
         //assert(s!=1);
         // if type A and type A reproduce, 25% chance will mutate to type B
-        if(humans.size()<=60&&s>0){ // the maximum population is 60
+        if(humans.size()<=20&&s>0){ // the maximum population is 20
             
             if(rand()%4<s){
                 if(rand()%2==0){
                     Human *h=Human::createMale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
                     humans.push_back(h);
                     world4->addChild(*h);
-                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
                 }
                 else{
                     Human *h=Human::createFemale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
                     
                     humans.push_back(h);
                     world4->addChild(*h);
-                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
                 }
                 
             }
@@ -495,14 +507,14 @@ void HW5(){
                     Human *h=Human::createMale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
                     humans.push_back(h);
                     world4->addChild(*h);
-                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
                 }
                 else{
                     Human *h=Human::createFemale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
                     
                     humans.push_back(h);
                     world4->addChild(*h);
-                    cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
                 }
                 
                 
@@ -513,14 +525,70 @@ void HW5(){
         
     }
     
+    for(int i=0; i<zombies.size();i++){
+        int s=zombies[i]->refresh(0.5f);
+        zombies[i]->draw();
+        //assert(s!=1);
+        // if type A and type A reproduce, 25% chance will mutate to type B
+        if(zombies.size()<=20&&s>0){ // the maximum population is 20
+            
+            if(rand()%4<s){
+                if(rand()%2==0){
+                    Zombie *h=Zombie::createMale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    zombies.push_back(h);
+                    world4->addChild(*h);
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                else{
+                    Zombie *h=Zombie::createFemale1(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    
+                    zombies.push_back(h);
+                    world4->addChild(*h);
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                
+            }
+            else {
+                if(rand()%2==0){
+                    Zombie *h=Zombie::createMale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    zombies.push_back(h);
+                    world4->addChild(*h);
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                else{
+                    Zombie *h=Zombie::createFemale2(Util::randomPosition().x(),Util::randomPosition().y(),Util::randomPosition().z());
+                    
+                    zombies.push_back(h);
+                    world4->addChild(*h);
+                    //cout << Util::randomPosition().x() << Util::randomPosition().y() << Util::randomPosition().z() << endl;
+                }
+                
+                
+            }
+            
+        }
+        
+        
+    }
+
     
     
-    glLoadIdentity();
+    
+    /*glLoadIdentity();
     glTranslatef(1, 0.5, -10);
     glRotatef(PI/2, 1, 0, 0);
-    glScalef(0.125, 0.125, 0.125);
+    //glScalef(0.125, 0.125, 0.125);
     
-    glutSolidDodecahedron();
+    glutSolidTorus(0.1, 0.2, 20, 20);
+    
+    glLoadIdentity();
+    glTranslatef(1, -0.5, -10);
+    glRotatef(PI/2, 1, 0, 0);
+    //glScalef(0.5, 0.125, 0.125);
+    
+    glutSolidSphere(0.22, 20, 20);*/
+    
+
     
     
     

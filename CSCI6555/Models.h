@@ -614,6 +614,239 @@ protected:
     
 };
 
+class Zombie:public Model{
+    
+public:
+    // constructor
+    Zombie(float x=0.0f,float y=0.0f,float z=-5.0f){
+        _x=x;
+        _y=y;
+        _z=z;
+        setVelocity(Vec(-10+rand()%20,-10+rand()%20,-10+rand()%20)/120);
+        
+        
+        
+        
+    }
+    
+    // factory methods for different kinds of human
+    static Zombie* createMale1(float x, float y,float z){
+        Zombie* m=new Zombie(x,y,z);
+        //m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=0.1f;
+        m->_radius=0.5f;
+        m->_sex="male";
+        m->_type="ZB";
+        return m;
+        
+        
+    }
+    
+    static Zombie* createMale2(float x, float y,float z){
+        Zombie* m=new Zombie(x,y,z);
+        //m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=0.2f;
+        m->_radius=0.5f;
+        m->_sex="male";
+        m->_type="ZA";
+        return m;
+        
+        
+    }
+    
+    
+    static Zombie* createFemale1(float x, float y, float z){
+        Zombie* m=new Zombie(x,y,z);
+        //m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=0.1f;
+        m->_radius=0.5f;
+        m->_sex="female";
+        m->_type="ZB";
+        return m;
+    }
+    
+    static Zombie* createFemale2(float x, float y, float z){
+        Zombie* m=new Zombie(x,y,z);
+        //m->setVelocity(Vec(0.1f,0,0));
+        m->setAcceleration(Vec(0,0,0));
+        m->size=0.2f;
+        m->_radius=0.5f;
+        m->_sex="female";
+        m->_type="ZA";
+        return m;
+    }
+    
+    
+    
+    
+    // refresh  function, if return =0 nothing happens
+    // return from 1 to 3, there is a reproduction going on
+    // 1, A-> A 2, A->B 3, B->B
+    
+    int refresh(float dt=1.0f){
+        
+        //assert(status!=3);
+        setNewVelocity(dt);
+        setNewPosition(dt);
+        setNewAngle(dt);
+        int status=checkReproduce();
+        int bcheck=checkBoundary();
+        
+        if(status>=0||bcheck!=0){
+            Vec newSpeed;
+            switch(bcheck){
+                case 11:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y(),_speed.z());
+                    break;
+                case 12:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y(),_speed.z());
+                    break;
+                case 13:
+                    newSpeed.set(_speed.x(),_speed.y()*(-1.0f),_speed.z());
+                    break;
+                case 14:
+                    newSpeed.set(_speed.x(),_speed.y()*(-1.0f),_speed.z());
+                    break;
+                case 15:
+                    newSpeed.set(_speed.x(),_speed.y(),_speed.z()*(-1.0f));
+                    break;
+                case 16:
+                    newSpeed.set(_speed.x(),_speed.y(),_speed.z()*(-1.0f));
+                    break;
+                default:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y()*(-1.0f),_speed.z()*(-1.0f));
+                    break;
+            }
+            //newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            _speed=newSpeed;
+            
+            //_speed=_speed*(-1.0f);
+            
+            // a very simple approximation
+            _omegax=-_omegax;
+            _omegay=-_omegay;
+            _omegaz=-_omegaz;
+            
+            
+            setNewPosition(dt);
+            setNewAngle(dt);
+            //status=checkReproduce();
+            
+            
+        }
+        /*else if(checkCollideCube()){
+         Vec newSpeed;
+         newSpeed.set(_speed.x(),_speed.y()*(-0.9),_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+         _speed=newSpeed;
+         }*/
+        return status;
+    }
+    
+    // draw function
+    
+    /*
+     glLoadIdentity();
+     glTranslatef(1, 0.5, -10);
+     glRotatef(PI/2, 1, 0, 0);
+     glScalef(0.125, 0.125, 0.125);
+     
+     glutSolidDodecahedron();
+     */
+    void draw(int mode=0){
+        glLoadIdentity();
+        
+        glTranslatef(_x, _y, _z);
+        if(_sex=="female"){
+            glRotatef(180, 1, 0, 0);
+        }
+        if(_sex=="male"){
+            glRotatef(0, 1, 0, 0);
+        }
+        
+        
+        if(_type=="ZA"){
+            glutSolidSphere(size, 20, 20);
+        }
+        else{
+            glutSolidTorus(size, 2*size, 20, 20);
+        }
+    }
+    
+    
+protected:
+    
+    // behaviors
+    // reproduction, also use to check collision
+    // if return is not negative, there is a collision
+    int checkReproduce(){
+        vector<Model*> checkable=parent[0]->getDecendents();
+        for(int i=0; i<checkable.size();i++){
+            if(checkable[i]!=this){
+                Vec FOI=Vec(checkable[i]->_x,checkable[i]->_y,checkable[i]->_z);
+                Vec here=Vec(_x,_y,_z);
+                Vec distance=here-FOI;
+                float dis=distance.length();
+                // if distance of the center is less than the sum of radius, there must be intersection
+                if(dis<_radius+checkable[i]->_radius/2){
+                    // if they are both zombies
+                    if((_type=="ZA"||_type=="ZB")&&(checkable[i]->_type=="ZA"||checkable[i]->_type=="ZB")){
+                        // if they have different sex
+                        if(_sex!=checkable[i]->_sex){
+                            if(_type=="ZA"&&checkable[i]->_type=="ZA"){
+                                return 1;
+                            }
+                            else if(_type=="ZB"&&checkable[i]->_type=="ZB"){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                        }
+                    }
+                    else{
+                        return 0;
+                    }
+                    
+                    
+                }
+            }
+        }
+        return -1;
+        
+    }
+    
+    int checkBoundary(){
+        if(_x>3){
+            return 11;
+        }
+        else if(_x<-3){
+            return 12;
+        }
+        else if(_y>3){
+            return 13;
+        }
+        else if(_y<-3){
+            return 14;
+        }
+        else if(_z>-4){
+            return 15;
+        }
+        else if(_z<-16){
+            return 16;
+        }
+        else {
+            return 0;
+        }
+    }
+    
+    
+    
+};
+
+
 // normal intelligent model
 class IntelModel : public Model{
 public:
