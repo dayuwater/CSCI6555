@@ -52,7 +52,7 @@ namespace Util {
     }
     
     // x, y -3 to 3
-    // z -6 to -11
+    // z -6 to -14
     Vec randomPosition(){
         Vec c;
         c.set(-3+rand()%6,-3+rand()%6,-11+rand()%5);

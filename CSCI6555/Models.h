@@ -460,8 +460,9 @@ public:
         setNewPosition(dt);
         setNewAngle(dt);
         int status=checkReproduce();
+        int bcheck=checkBoundary();
         
-        if(status>=0){
+        if(status>=0||bcheck!=0){
             Vec newSpeed;
             newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
             //_speed=newSpeed;
@@ -550,6 +551,30 @@ protected:
         }
         return -1;
         
+    }
+    
+    int checkBoundary(){
+        if(_x>3){
+            return 11;
+        }
+        else if(_x<-3){
+            return 12;
+        }
+        else if(_y>3){
+            return 13;
+        }
+        else if(_y<-3){
+            return 14;
+        }
+        else if(_z>-4){
+            return 15;
+        }
+        else if(_z<-16){
+            return 16;
+        }
+        else {
+            return 0;
+        }
     }
     
     

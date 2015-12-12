@@ -254,24 +254,17 @@ void init5(){
     
     world4=new Model();
     
-    world4->addChild(*Floor4);
-    world4->addChild(*Ceiling4);
-    world4->addChild(*LeftWall4);
-    world4->addChild(*RightWall4);
-    world4->addChild(*BackWall4);
-    world4->addChild(*FrontWall4);
-    
-    m1=Human::createMale1(0, 0, -10);
+    m1=Human::createMale1(0, 0, -8);
     world4->addChild(*m1);
     
-    m2=Human::createMale2(0, 1.5, -10);
+    m2=Human::createMale2(0, 1.5, -8);
     world4->addChild(*m2);
     
-    f1=Human::createFemale1(1.5, 0, -10);
+    f1=Human::createFemale1(1.5, 0, -8);
     world4->addChild(*f1);
     
     
-    f2=Human::createFemale2(1.5, 1.5, -10);
+    f2=Human::createFemale2(1.5, 1.5, -8);
     world4->addChild(*f2);
     
     humans.push_back(m1);
