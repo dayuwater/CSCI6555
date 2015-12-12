@@ -464,10 +464,34 @@ public:
         
         if(status>=0||bcheck!=0){
             Vec newSpeed;
-            newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
-            //_speed=newSpeed;
+            switch(bcheck){
+                case 11:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y(),_speed.z());
+                    break;
+                case 12:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y(),_speed.z());
+                    break;
+                case 13:
+                    newSpeed.set(_speed.x(),_speed.y()*(-1.0f),_speed.z());
+                    break;
+                case 14:
+                    newSpeed.set(_speed.x(),_speed.y()*(-1.0f),_speed.z());
+                    break;
+                case 15:
+                    newSpeed.set(_speed.x(),_speed.y(),_speed.z()*(-1.0f));
+                    break;
+                case 16:
+                    newSpeed.set(_speed.x(),_speed.y(),_speed.z()*(-1.0f));
+                    break;
+                default:
+                    newSpeed.set(_speed.x()*(-1.0f),_speed.y()*(-1.0f),_speed.z()*(-1.0f));
+                    break;
+            }
+            //newSpeed.set(_speed.x(),_speed.y()*0.9f,_speed.z()); // if collide, inverse the motion, the -0.9 is the estimation of energy loss
+            _speed=newSpeed;
             
-            _speed=_speed*(-1.0f);
+            //_speed=_speed*(-1.0f);
+            
             // a very simple approximation
             _omegax=-_omegax;
             _omegay=-_omegay;
