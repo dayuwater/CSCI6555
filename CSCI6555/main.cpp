@@ -387,13 +387,13 @@ void renderReady(){
     // enable lighting
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-    glEnable(GL_COLOR);
+    //glEnable(GL_COLOR);
     
     // light source attributes
     GLfloat LightAmbient[]	= { 0.4f, 0.4f, 0.4f, 1.0f };
     GLfloat LightDiffuse[]	= { 0.3f, 0.3f, 0.3f, 1.0f };
     GLfloat LightSpecular[]	= { 0.4f, 0.4f, 0.4f, 1.0f };
-    GLfloat LightPosition[] = { 5.0f, 5.0f, 5.0f, 1.0f };
+    GLfloat LightPosition[] = { 0.0f, 0.0f, -20.0f, 1.0f };
     
     glLightfv(GL_LIGHT0, GL_AMBIENT , LightAmbient );
     glLightfv(GL_LIGHT0, GL_DIFFUSE , LightDiffuse );
@@ -469,6 +469,18 @@ void HW4(){
     
 }
 
+void output(GLfloat x, GLfloat y, char *text)
+{
+    char *p;
+    
+    glPushMatrix();
+    glTranslatef(x, y, -5);
+    for (p = text; *p; p++)
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+    glPopMatrix();
+}
+
+
 void HW5(){
     Floor4->draw();
     Ceiling4->draw();
@@ -476,15 +488,34 @@ void HW5(){
     RightWall4->draw();
     BackWall4->draw();
     
+    // clean up the corpse for human
+    for(int i=0; i<humans.size();i++){
+        if(humans[i]->_alive==false){
+            humans.erase(humans.begin()+i);
+            world4->deleteChild(humans[i]);
+        }
+    }
+    
+    
+    // clean up the corpse for zombie
+    for(int i=0; i<zombies.size();i++){
+        if(zombies[i]->_alive==false){
+            zombies.erase(zombies.begin()+i);
+            world4->deleteChild(zombies[i]);
+        }
+    }
+
+
     
     
     
+    // human reproduction
     for(int i=0; i<humans.size();i++){
         int s=humans[i]->refresh(0.5f);
         humans[i]->draw();
         //assert(s!=1);
         // if type A and type A reproduce, 25% chance will mutate to type B
-        if(humans.size()<=20&&s>0){ // the maximum population is 20
+        if(humans.size()<=20&&s>0&&s<4){ // the maximum population is 20
             
             if(rand()%4<s){
                 if(rand()%2==0){
@@ -525,6 +556,7 @@ void HW5(){
         
     }
     
+    // zombie reproduction
     for(int i=0; i<zombies.size();i++){
         int s=zombies[i]->refresh(0.5f);
         zombies[i]->draw();
@@ -570,9 +602,8 @@ void HW5(){
         
         
     }
-
     
-    
+   
     
     /*glLoadIdentity();
     glTranslatef(1, 0.5, -10);
@@ -588,11 +619,44 @@ void HW5(){
     
     glutSolidSphere(0.22, 20, 20);*/
     
+    glLoadIdentity();
+    
+    output(0,0,"Hello");
+    
+    int cha=0;
+    int chb=0;
+    int cza=0;
+    int czb=0;
+    
+    for(int i=0; i<humans.size();i++){
+        if(humans[i]->_type=="HA"){
+            cha++;
+        }
+        else if(humans[i]->_type=="HB"){
+            chb++;
+        }
+    }
+    
+    
+    for(int i=0; i<zombies.size();i++){
+        if(zombies[i]->_type=="ZA"){
+            cza++;
+        }
+        else if(zombies[i]->_type=="ZB"){
+            czb++;
+        }
+    }
+    
+    cout << "HA:" << cha<< " HB:" <<chb<< " ZA: " << cza << " ZB" << czb << endl;
+    
+    
 
     
     
     
 }
+
+
 
 
 void render( void ) {

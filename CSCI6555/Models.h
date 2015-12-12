@@ -53,6 +53,14 @@ public:
         m.parent.push_back(this);
     }
     
+    void deleteChild(Model *m){
+        for(int i=0; i<children.size();i++){
+            if(m==children[i]){
+                children.erase(children.begin()+i);
+            }
+        }
+    }
+    
     
     // rotate about the parent
     void rotate(float angle){
@@ -104,6 +112,8 @@ public:
         
         return result;
     }
+    
+    
     
     
     // physics functions
@@ -275,6 +285,7 @@ public:
     float _radius;
     string _type;
     string _sex;
+    bool _alive;
 protected:
     vector<Model*> parent;
     vector<Model*> children;
@@ -390,6 +401,7 @@ public:
         _y=y;
         _z=z;
         setVelocity(Vec(-10+rand()%20,-10+rand()%20,-10+rand()%20)/120);
+        _alive=true;
         
         
         
@@ -402,7 +414,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
-        m->_radius=0.5f;
+        m->_radius=1.0f;
         m->_sex="male";
         m->_type="HB";
         return m;
@@ -415,7 +427,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
-        m->_radius=0.5f;
+        m->_radius=2.0f;
         m->_sex="male";
         m->_type="HA";
         return m;
@@ -429,7 +441,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
-        m->_radius=0.5f;
+        m->_radius=1.0f;
         m->_sex="female";
         m->_type="HB";
         return m;
@@ -440,7 +452,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
-        m->_radius=0.5f;
+        m->_radius=2.0f;
         m->_sex="female";
         m->_type="HA";
         return m;
@@ -565,7 +577,21 @@ protected:
                             }
                         }
                     }
+                    // if Type A human meets Type B zombie, the human kills that zombie
+                    else if((_type=="HA")&&(checkable[i]->_type=="ZB")){
+                        checkable[i]->_alive=false; // mark the zombie as killed, delete that zombie during next loop
+                        return 4;
+                        
+                    }
+                    // if Type B human meets Type A zombie, the zombie kills that human
+
+                    else if((_type=="HB")&&(checkable[i]->_type=="ZA")){
+                        this->_alive=false; // mark the human as killed, delete that human during next loop
+                        return 5;
+                        
+                    }
                     else{
+                        
                         return 0;
                     }
                     
@@ -623,7 +649,7 @@ public:
         _y=y;
         _z=z;
         setVelocity(Vec(-10+rand()%20,-10+rand()%20,-10+rand()%20)/120);
-        
+        _alive=true;
         
         
         
@@ -635,7 +661,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.1f;
-        m->_radius=0.5f;
+        m->_radius=0.2f;
         m->_sex="male";
         m->_type="ZB";
         return m;
@@ -648,7 +674,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.2f;
-        m->_radius=0.5f;
+        m->_radius=0.4f;
         m->_sex="male";
         m->_type="ZA";
         return m;
@@ -662,7 +688,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.1f;
-        m->_radius=0.5f;
+        m->_radius=0.2f;
         m->_sex="female";
         m->_type="ZB";
         return m;
@@ -673,7 +699,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.2f;
-        m->_radius=0.5f;
+        m->_radius=0.4f;
         m->_sex="female";
         m->_type="ZA";
         return m;
