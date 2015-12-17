@@ -69,7 +69,7 @@ bool keyInc=true; // see if the key is increasing
 // 1=HW1
 // 2=HW2
 // Going to use one project for all homeworks
-GLint mode=5;
+GLint mode=3;
 
 // Models used for HW3
 
@@ -119,17 +119,17 @@ void init3(){
     
     
     
-    teapot=new Teapot(0.25f,-1.0f,0.0f,-5.0f);
+    teapot=new Teapot(0.25f,-0.0f,0.0f,-5.0f);
     //teapot->setVelocity(Vec(0,0.5,0.5));
     teapot->setMass(1.0f);
-    teapot->addForce(Quaternion(0.1, 1, 0, 0,false)); // regular gravity
+    teapot->addForce(Quaternion(-0.1, 0, 1, 0,false)); // regular gravity
     //teapot->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot->setVelocity(Vec(0.06,0.06,0));
     teapot->setSpin(0, PI/10, 0);
     teapot->setAccByForce();
     
     
-    teapot2=new Teapot(0.25f,1.0f,-0.0f,-5.0f);
+    /*teapot2=new Teapot(0.25f,1.0f,-0.0f,-5.0f);
     //teapot2->setVelocity(Vec(0,-0.5,0.5));
     teapot2->setMass(1.0f);
     teapot2->addForce(Quaternion(-0.1, 1, 0, 0,false)); // regular gravity
@@ -157,7 +157,7 @@ void init3(){
     //teapot4->addForce(Quaternion(0.02, 1, 0.5, 0.5,false));
     teapot4->setVelocity(Vec(0.06,0.06,0));
     teapot4->setSpin(0, -PI/10, 0);
-    teapot4->setAccByForce();
+    teapot4->setAccByForce();*/
     
     Floor=new Cube(3.0f,0.0f,-3.0f,-5.0f);
     ceiling=new Cube(3.0f,0.0f,3.0f,-5.0f);
@@ -173,9 +173,9 @@ void init3(){
     world->addChild(*leftWall);
     world->addChild(*rightWall);
     world->addChild(*teapot);
-    world->addChild(*teapot2);
-    world->addChild(*teapot3);
-    world->addChild(*teapot4);
+    //world->addChild(*teapot2);
+    //world->addChild(*teapot3);
+    //world->addChild(*teapot4);
     
     
     
@@ -429,7 +429,7 @@ void HW3(){
     teapot->draw();
     
     
-    teapot2->refresh(0.1f);
+   /* teapot2->refresh(0.1f);
     //cout << teapot->_y << endl;
     teapot2->draw();
     
@@ -440,7 +440,7 @@ void HW3(){
     
     teapot4->refresh(0.1f);
     //cout << teapot->_y << endl;
-    teapot4->draw();
+    teapot4->draw();*/
     
     Floor->draw();
     ceiling->draw();
@@ -462,7 +462,7 @@ void HW4(){
     RightWall4->draw();
     BackWall4->draw();
     for(int i=0; i<teapots.size();i++){
-        teapots[i]->refresh(0.1f,2);
+        teapots[i]->refresh(0.1f);
         teapots[i]->draw();
     }
     

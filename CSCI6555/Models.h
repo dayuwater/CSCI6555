@@ -380,7 +380,7 @@ public:
         _y=y;
         _z=z;
         
-        _radius=size*sqrt(2);
+        _radius=size*sqrt(1.2);
     }
     
     
@@ -1070,7 +1070,7 @@ private:
 };
 
 
-class Teapot : public IntelModel{
+class Teapot : public Model{
 public:
     Teapot(float sizee=0.5f,float x=0.0f,float y=0.0f,float z=-5.0f,float ry=0){
         size=sizee;
