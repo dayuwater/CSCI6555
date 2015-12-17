@@ -414,7 +414,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
-        m->_radius=1.0f;
+        m->_radius=0.5f;
         m->_sex="male";
         m->_type="HB";
         return m;
@@ -427,7 +427,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
-        m->_radius=2.0f;
+        m->_radius=0.5f;
         m->_sex="male";
         m->_type="HA";
         return m;
@@ -441,7 +441,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=1.0f;
-        m->_radius=1.0f;
+        m->_radius=0.5f;
         m->_sex="female";
         m->_type="HB";
         return m;
@@ -452,7 +452,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=2.0f;
-        m->_radius=2.0f;
+        m->_radius=0.5f;
         m->_sex="female";
         m->_type="HA";
         return m;
@@ -661,7 +661,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.1f;
-        m->_radius=0.2f;
+        m->_radius=0.5f;
         m->_sex="male";
         m->_type="ZB";
         return m;
@@ -674,7 +674,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.2f;
-        m->_radius=0.4f;
+        m->_radius=0.5f;
         m->_sex="male";
         m->_type="ZA";
         return m;
@@ -688,7 +688,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.1f;
-        m->_radius=0.2f;
+        m->_radius=0.5f;
         m->_sex="female";
         m->_type="ZB";
         return m;
@@ -699,7 +699,7 @@ public:
         //m->setVelocity(Vec(0.1f,0,0));
         m->setAcceleration(Vec(0,0,0));
         m->size=0.2f;
-        m->_radius=0.4f;
+        m->_radius=0.5f;
         m->_sex="female";
         m->_type="ZA";
         return m;

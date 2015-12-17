@@ -393,7 +393,7 @@ void renderReady(){
     GLfloat LightAmbient[]	= { 0.4f, 0.4f, 0.4f, 1.0f };
     GLfloat LightDiffuse[]	= { 0.3f, 0.3f, 0.3f, 1.0f };
     GLfloat LightSpecular[]	= { 0.4f, 0.4f, 0.4f, 1.0f };
-    GLfloat LightPosition[] = { 0.0f, 0.0f, -20.0f, 1.0f };
+    GLfloat LightPosition[] = { 0.0f, 0.0f, 5.0f, 1.0f };
     
     glLightfv(GL_LIGHT0, GL_AMBIENT , LightAmbient );
     glLightfv(GL_LIGHT0, GL_DIFFUSE , LightDiffuse );
